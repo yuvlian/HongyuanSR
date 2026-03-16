@@ -22438,6 +22438,7 @@ message GateServer {
 	string ifix_version = 749;
 	string mdk_res_version = 807;
 	string ifix_version_android = 1401;
+	bool use_tcp = 1951;
 }
 
 message GateServerScNotify {
