@@ -1,3 +1,4 @@
+from enum import StrEnum
 from pydantic import BaseModel
 from typing import Dict, List, Optional
 
@@ -33,8 +34,15 @@ class Monster(BaseModel):
     level: int
 
 
+class BattleType(StrEnum):
+    MOC = "MOC"
+    PF = "PF"
+    SU = "SU"
+    AS = "AS"
+
+
 class BattleConfig(BaseModel):
-    battle_type: Optional[str] = None
+    battle_type: Optional[BattleType] = None
     blessings: List[Blessing]
     custom_stats: List[SubAffix]
     monsters: List[List[Monster]]

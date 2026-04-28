@@ -1,6 +1,6 @@
 from enum import StrEnum
 from pydantic import BaseModel
-from typing import Dict, Optional
+from typing import OrderedDict, Optional
 
 
 FILE_NAME = "db.json"
@@ -71,9 +71,9 @@ class PlayerMultiPath(BaseModel):
 
 
 class PlayerLineup(BaseModel):
-    overworld_lineup: Dict[int, int]
+    overworld_lineup: OrderedDict[int, int]
     # this overrides the overworld_lineup when entering battle
-    custom_battle_lineup: Optional[Dict[int, int]] = None
+    custom_battle_lineup: Optional[OrderedDict[int, int]] = None
 
 
 class DB(BaseModel):
