@@ -36,10 +36,19 @@ def handler(fn: T) -> T:
     return fn
 
 
-# need to trigger the decorators
+# unused import that's needed to trigger the decorators
 # putting this above the decorator function will cause circular import error
-# the noqa thing is used to suppress ruff's warnings.
-from .handlers import avatar, lineup, mission, player, scene, battle, item, archive, recommend  # noqa: E402, F401
+from .handlers import (
+    avatar,
+    lineup,
+    mission,
+    player,
+    scene,
+    battle,
+    item,
+    archive,
+    recommend,
+)
 
 DUMMY_MAP: dict[int, int] = {
     CmdRegistry.get_id(n + "CsReq"): CmdRegistry.get_id(n + "ScRsp")

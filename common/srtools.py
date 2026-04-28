@@ -87,48 +87,28 @@ class FreesrData(BaseModel):
         return FreesrData(
             key="default",
             avatars={
-                1001: Avatar(
-                    avatar_id=1001,
+                avatar_id: Avatar(
+                    avatar_id=avatar_id,
                     data=Data(
                         rank=0,
                         skills={
                             n: 1
                             for n in (
-                                *range(1001001, 1001005),
-                                1001007,
-                                *range(1001101, 1001104),
-                                *range(1001201, 1001211),
+                                *range(avatar_id * 1000 + 1, avatar_id * 1000 + 5),
+                                avatar_id * 1000 + 7,
+                                *range(avatar_id * 1000 + 101, avatar_id * 1000 + 104),
+                                *range(avatar_id * 1000 + 201, avatar_id * 1000 + 211),
                             )
                         },
                         skills_by_anchor_type={i: 1 for i in range(1, 19)},
                     ),
                     level=80,
                     promotion=6,
-                    sp_max=120,
+                    sp_max=120 if avatar_id == 1001 else 100,
                     sp_value=0,
-                    techniques=[100101],
-                ),
-                1002: Avatar(
-                    avatar_id=1002,
-                    data=Data(
-                        rank=0,
-                        skills={
-                            n: 1
-                            for n in (
-                                *range(1002001, 1002005),
-                                1002007,
-                                *range(1002101, 1002104),
-                                *range(1002201, 1002211),
-                            )
-                        },
-                        skills_by_anchor_type={i: 1 for i in range(1, 19)},
-                    ),
-                    level=80,
-                    promotion=6,
-                    sp_max=100,
-                    sp_value=0,
-                    techniques=[100201],
-                ),
+                    techniques=[avatar_id * 100 + 1],
+                )
+                for avatar_id in range(1001, 1005)
             },
             relics=[
                 Relic(

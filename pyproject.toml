@@ -11,3 +11,6 @@ dependencies = [
     "fastapi>=0.135.1",
     "uvicorn>=0.41.0",
 ]
+
+[tool.ruff.lint.per-file-ignores]
+"gameserver/handler.py" = ["E402", "F401"]

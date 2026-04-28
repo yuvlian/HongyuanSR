@@ -19,8 +19,8 @@ async def query_dispatch() -> PlainTextResponse:
     rsp = Dispatch(
         region_list=[
             RegionInfo(
-                name="hos",
-                title="House of Spiders",
+                name="House of Spiders",
+                title="H.O.S",
                 env_type="9",
                 dispatch_url=f"http://{SDKSERVER_ADDR[0]}:{SDKSERVER_ADDR[1]}/query_gateway",
             )

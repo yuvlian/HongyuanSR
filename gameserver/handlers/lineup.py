@@ -7,7 +7,7 @@ from proto import (
     SetLineupNameScRsp,
     JoinLineupCsReq,
     JoinLineupScRsp,
-    QuitLineupCsReq,
+    # QuitLineupCsReq,
     QuitLineupScRsp,
     ReplaceLineupCsReq,
     ReplaceLineupScRsp,
@@ -26,13 +26,12 @@ from proto import (
     SceneEntityRefreshInfo,
     SceneEntityInfo,
     SceneActorInfo,
-    MotionInfo,
-    Vector,
 )
 from ..handler import handler
 from ..connection import Connection
 from ..packet import Packet
 from common.db import MultiPath, DB
+import asyncio
 
 
 def build_lineup(d: DB) -> LineupInfo:
@@ -56,7 +55,7 @@ def build_lineup(d: DB) -> LineupInfo:
         is_virtual=False,
         plane_id=d.scene_id,
         name="Yoshihide",
-        mp=5,
+        mp=0,  # technique points. dont want people to ask why some techniques break game.
         max_mp=5,
         index=0,
         extra_lineup_type=ExtraLineupType.LINEUP_NONE,
@@ -66,57 +65,33 @@ def build_lineup(d: DB) -> LineupInfo:
 
 
 async def refresh_lineup(c: Connection) -> None:
-    await c.save_db()
-
-    lineup = build_lineup(c.db)
-    await c.send_packet(SyncLineupNotify(lineup=lineup, reason_list=[]))
-
-    new_entities = []
-    for i in range(4):        
-        if avatar_id := c.db.lineup.overworld_lineup.get(i):
-            new_entities.append(
-                SceneEntityRefreshInfo(
-                    add_entity=SceneEntityInfo(
-                        entity_id=i + 1,
-                        group_id=0,
-                        inst_id=0,
-                        actor=SceneActorInfo(
-                            avatar_type=AvatarType.AVATAR_FORMAL_TYPE,
-                            base_avatar_id=MultiPath.get_base_id(avatar_id),
-                            uid=c.db.player.uid,
-                        ),
-                        motion=MotionInfo(
-                            pos_index=Vector(
-                                x=c.db.player.pos.x,
-                                y=c.db.player.pos.y,
-                                z=c.db.player.pos.z,
-                            ),
-                            rot_index=Vector(),
-                        ),
-                    )
-                )
+    new_entities = [
+        SceneEntityRefreshInfo(
+            add_entity=SceneEntityInfo(
+                actor=SceneActorInfo(
+                    uid=c.db.player.uid,
+                    avatar_type=AvatarType.AVATAR_FORMAL_TYPE,
+                    base_avatar_id=MultiPath.get_base_id(v),
+                ),
+                entity_id=k + 1,
             )
-        else:
-            new_entities.append(
-                SceneEntityRefreshInfo(
-                    delete_entity=i + 1
-                )
-            )
+        )
+        for k, v in c.db.lineup.overworld_lineup.items()
+    ]
 
+    await c.send_packet(SyncLineupNotify(lineup=build_lineup(c.db)))
     await c.send_packet(
         SceneGroupRefreshScNotify(
             group_refresh_list=[
                 GroupRefreshInfo(
-                    group_id=0,
-                    state=0,
                     refresh_type=SceneGroupRefreshType.LOADED,
                     refresh_entity=new_entities,
                 )
             ],
             floor_id=(c.db.scene_id * 1000) + 1,
-            dimension_id=0,
         )
     )
+    asyncio.create_task(c.save_db())
 
 
 @handler
@@ -157,27 +132,7 @@ async def on_set_lineup_name(c: Connection, pkt: Packet) -> None:
 
 @handler
 async def on_quit_lineup(c: Connection, pkt: Packet) -> None:
-    req = c.decode_packet(pkt, QuitLineupCsReq)
-    rsp = QuitLineupScRsp(
-        retcode=0,
-        base_avatar_id=req.base_avatar_id,
-        plane_id=req.plane_id,
-        is_virtual=req.is_virtual,
-    )
-
-    new_lineup_list = []
-    found = False
-    for aid in c.db.lineup.overworld_lineup.values():
-        if aid == req.base_avatar_id:
-            found = True
-            continue
-        new_lineup_list.append(aid)
-
-    if found:
-        c.db.lineup.overworld_lineup = {i: aid for i, aid in enumerate(new_lineup_list)}
-        await refresh_lineup(c)
-
-    await c.send_packet(rsp)
+    await c.send_packet(QuitLineupScRsp())
 
 
 @handler
@@ -185,30 +140,7 @@ async def on_join_lineup(c: Connection, pkt: Packet) -> None:
     req = c.decode_packet(pkt, JoinLineupCsReq)
     rsp = JoinLineupScRsp()
 
-    if req.base_avatar_id in c.db.lineup.overworld_lineup.values():
-        await c.send_packet(rsp)
-        return
-
-    if len(c.db.lineup.overworld_lineup) >= 4:
-        await c.send_packet(rsp)
-        return
-
-    lineup = dict(c.db.lineup.overworld_lineup)
-    
-    target_slot = req.slot
-    if target_slot > 3 or target_slot in lineup:
-        for i in range(4):
-            if i not in lineup:
-                target_slot = i
-                break
-        else:
-            await c.send_packet(rsp)
-            return
-
-    lineup[target_slot] = req.base_avatar_id
-    sorted_lineup = [lineup[i] for i in sorted(lineup.keys())]
-    c.db.lineup.overworld_lineup = {i: aid for i, aid in enumerate(sorted_lineup)}
-
+    c.db.lineup.overworld_lineup[req.slot] = req.base_avatar_id
     await refresh_lineup(c)
     await c.send_packet(rsp)
 
@@ -217,27 +149,12 @@ async def on_join_lineup(c: Connection, pkt: Packet) -> None:
 async def on_replace_lineup(c: Connection, pkt: Packet) -> None:
     req = c.decode_packet(pkt, ReplaceLineupCsReq)
     rsp = ReplaceLineupScRsp()
-    
-    new_lineup = {}
-    slots = sorted(req.lineup_slot_list, key=lambda x: x.slot)
 
-    idx = 0
-    added_ids = set()
-    for slot_data in slots:
-        if idx >= 4:
-            break
-        avatar_id = MultiPath.get_base_id(slot_data.id)
-        if avatar_id in added_ids:
-            continue
-        new_lineup[idx] = avatar_id
-        added_ids.add(avatar_id)
-        idx += 1
-
-    if not new_lineup:
-        await c.send_packet(rsp)
-        return
-
-    c.db.lineup.overworld_lineup = new_lineup
+    for slot, _ in c.db.lineup.overworld_lineup.items():
+        if 0 <= slot < len(req.lineup_slot_list):
+            c.db.lineup.overworld_lineup[slot] = req.lineup_slot_list[slot].id
+        else:
+            c.db.lineup.overworld_lineup[slot] = 0
 
     await refresh_lineup(c)
     await c.send_packet(rsp)

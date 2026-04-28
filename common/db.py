@@ -109,7 +109,10 @@ class DB(BaseModel):
             ),
             multi_path=PlayerMultiPath(
                 march_multi_path=MultiPath.MARCH_PRESERVATION,
-                tb_multi_path=MultiPath.STELLE_ELATION,
+                tb_multi_path=MultiPath.STELLE_DESTRUCTION,
             ),
-            lineup=PlayerLineup(overworld_lineup={0: 1002}, custom_battle_lineup=None),
+            lineup=PlayerLineup(
+                overworld_lineup={0: 1001, 1: 1002, 2: 1003, 4: 1004},
+                custom_battle_lineup=None,
+            ),
         )
