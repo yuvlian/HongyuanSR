@@ -47,10 +47,14 @@ class Handlers
 
 ### features
 
-- this ps supports the freesr-data.json from https://srtools.pages.dev/ for battle
-- this ps has limited support for changing stuff ingame (cant swap relics, cant swap lc, etc.)
-- custom battle lineup support (so u can have like 10 sparxie)
-- helper for running lua (check player heartbeat handler)
+NOTE: WIP, battle isnt added yet & lineup is still broken
+
+- this ps supports the freesr-data.json from https://srtools.neonteam.dev/ for battle
+- this ps has limited support for changing stuff ingame:
+  - you cant change lightcones, relics, etc. in overworld
+  - however, updating freesr-data.json will affect battle
+- custom battle lineup support (so u can have like 10 sparxie) through db.json
+- helper for running lua. see main.lua and player heartbeat handler
 
 and more i guess idk, its very basic and idc to add or fix stuff
 
