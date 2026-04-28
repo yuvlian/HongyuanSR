@@ -62,7 +62,6 @@ class CalyxEntity(BaseModel):
 class PlayerEntity(BaseModel):
     uid: int
     name: str
-    map_layer: int
     pos: Vec3
 
 
@@ -95,14 +94,13 @@ class DB(BaseModel):
                 prop_id=808,
                 pos=Vec3(
                     x=31440,
-                    y=192020,
+                    y=192820,
                     z=433790,
                 ),
             ),
             player=PlayerEntity(
                 uid=333,
                 name="Araya",
-                map_layer=2,
                 pos=Vec3(
                     x=31440,
                     y=192820,

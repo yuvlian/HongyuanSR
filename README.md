@@ -53,6 +53,7 @@ NOTE: WIP, battle isnt added yet & lineup is still broken
 - this ps has limited support for changing stuff ingame:
   - you cant change lightcones, relics, etc. in overworld
   - however, updating freesr-data.json will affect battle
+  - to change mc path and such, edit in db.json and restart gameserver
 - custom battle lineup support (so u can have like 10 sparxie) through db.json
 - helper for running lua. see main.lua and player heartbeat handler
 

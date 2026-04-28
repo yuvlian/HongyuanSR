@@ -18,36 +18,38 @@ from common.db import MultiPath
 
 @handler
 async def on_get_cur_scene_info(c: Connection, pkt: Packet) -> None:
-    shiomi = sum(b"Shiomi Yoru") << 3
     entity_group_list = []
 
-    # player entity
-    if av_id := c.db.lineup.overworld_lineup.get("0"):
-        entity_group_list.append(
-            SceneEntityGroupInfo(
-                entity_list=[
-                    SceneEntityInfo(
-                        entity_id=shiomi,
-                        actor=SceneActorInfo(
-                            base_avatar_id=MultiPath.get_base_id(av_id),
-                            avatar_type=AvatarType.AVATAR_FORMAL_TYPE,
-                            map_layer=c.db.player.map_layer,
-                            uid=c.db.player.uid,
-                        ),
-                        motion=MotionInfo(
-                            pos_index=Vector(
-                                x=c.db.player.pos.x,
-                                y=c.db.player.pos.y,
-                                z=c.db.player.pos.z,
-                            ),
-                            rot_index=Vector(),
-                        ),
+    player_entities = []
+    for slot, av_id in c.db.lineup.overworld_lineup.items():
+        player_entities.append(
+            SceneEntityInfo(
+                entity_id=slot + 1,
+                actor=SceneActorInfo(
+                    base_avatar_id=MultiPath.get_base_id(av_id),
+                    avatar_type=AvatarType.AVATAR_FORMAL_TYPE,
+                    uid=c.db.player.uid,
+                ),
+                motion=MotionInfo(
+                    pos_index=Vector(
+                        x=c.db.player.pos.x,
+                        y=c.db.player.pos.y,
+                        z=c.db.player.pos.z,
                     ),
-                ],
+                    rot_index=Vector(),
+                ),
             )
         )
 
-    # calyx entity
+    if player_entities:
+        entity_group_list.append(
+            SceneEntityGroupInfo(
+                group_id=0,
+                state=0,
+                entity_list=player_entities,
+            )
+        )
+
     if c.db.calyx:
         entity_group_list.append(
             SceneEntityGroupInfo(
@@ -81,7 +83,7 @@ async def on_get_cur_scene_info(c: Connection, pkt: Packet) -> None:
             entry_id=(c.db.scene_id * 100) + 1,
             floor_id=(c.db.scene_id * 1000) + 1,
             game_mode_type=1,
-            leader_entity_id=shiomi,
+            leader_entity_id=1,
             entity_group_list=entity_group_list,
             scene_identifier=SceneIdentifier(floor_id=(c.db.scene_id * 1000) + 1),
         )
