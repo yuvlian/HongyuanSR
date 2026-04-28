@@ -12,3 +12,5 @@ proto/**
 parse_cmd.py
 clean_proto.py
 unclean.proto
+freesr-data.json
+db.json

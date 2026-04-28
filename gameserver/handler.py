@@ -39,12 +39,13 @@ def handler(fn: T) -> T:
 # need to trigger the decorators
 # putting this above the decorator function will cause circular import error
 # the noqa thing is used to suppress ruff's warnings.
-from .handlers import avatar, lineup, mission, player, scene, battle  # noqa: E402, F401
+from .handlers import avatar, lineup, mission, player, scene, battle, item, archive, recommend  # noqa: E402, F401
 
 DUMMY_MAP: dict[int, int] = {
     CmdRegistry.get_id(n + "CsReq"): CmdRegistry.get_id(n + "ScRsp")
     for n in [
-        "GetRogueScoreRewardInfo",
+        "GetPreAvatarGrowthInfo",
+        "GetPreAvatarActivityList",
         "QueryProductInfo",
         "GetQuestData",
         "GetQuestRecord",
@@ -80,7 +81,7 @@ DUMMY_MAP: dict[int, int] = {
         "GetPhoneData",
         "InteractProp",
         "FinishTalkMission",
-        "GetBag",
+        # "GetBag",
         "PlayerLoginFinish",
         "GetFirstTalkNpc",
         "GetAssistHistory",
@@ -111,7 +112,6 @@ DUMMY_MAP: dict[int, int] = {
         "GetMapRotationData",
         "GetPetData",
         "EnterSection",
-        "GetSwitchHandData",
         "GetPamSkinData",
         "GetNpcMessageGroup",
         "GetRechargeGiftInfo",
@@ -141,7 +141,7 @@ DUMMY_MAP: dict[int, int] = {
         "GetFeverTimeActivityData",
         "TarotBookGetData",
         "GetMarkChest",
-        "GetArchiveData",
+        # "GetArchiveData",
         "GetAllSaveRaid",
         "GetDrinkMakerData",
         "UpdateTrackMainMission",
@@ -150,5 +150,10 @@ DUMMY_MAP: dict[int, int] = {
     ]
 }
 
-DUMMY_MAP[CmdRegistry.get_id("GetLevelRewardGetListReq")] = CmdRegistry.get_id("GetLevelRewardTakenListScRsp")
-DUMMY_MAP[CmdRegistry.get_id("UpdateServerPrefsCsReq")] = CmdRegistry.get_id("UpdateServerPrefsDataScRsp")
+# doesnt follow pattern for some reason
+DUMMY_MAP[CmdRegistry.get_id("GetLevelRewardGetListReq")] = CmdRegistry.get_id(
+    "GetLevelRewardTakenListScRsp"
+)
+DUMMY_MAP[CmdRegistry.get_id("UpdateServerPrefsCsReq")] = CmdRegistry.get_id(
+    "UpdateServerPrefsDataScRsp"
+)

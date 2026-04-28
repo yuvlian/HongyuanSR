@@ -1,12 +1,13 @@
 import asyncio
-from config import GAMESERVER_ADDR
+from common import GAMESERVER_ADDR
+from common.util import Log
 from .client import handle_client
 
 
 async def start_server() -> None:
     host, port = GAMESERVER_ADDR
     server = await asyncio.start_server(handle_client, host, port)
-    print(f"gameserver listening on {host}:{port}\n")
+    Log.info(f"gameserver listening on {host}:{port}")
 
     async with server:
         await server.serve_forever()

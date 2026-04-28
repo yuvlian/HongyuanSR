@@ -23,9 +23,7 @@ class Packet:
         view = memoryview(buf)
 
         view[0:4] = HEAD_MAGIC
-        struct.pack_into(">H", view, 4, self.cmd)
-        struct.pack_into(">H", view, 6, head_len)
-        struct.pack_into(">I", view, 8, body_len)
+        struct.pack_into(">HHI", view, 4, self.cmd, head_len, body_len)
 
         offset = 12
         if head_len > 0:
@@ -50,9 +48,7 @@ class Packet:
         if header_data[:4] != HEAD_MAGIC:
             raise ValueError("invalid head magic")
 
-        cmd = struct.unpack_from(">H", header_data, 4)[0]
-        head_len = struct.unpack_from(">H", header_data, 6)[0]
-        body_len = struct.unpack_from(">I", header_data, 8)[0]
+        cmd, head_len, body_len = struct.unpack_from(">HHI", header_data, 4)
 
         try:
             buf = await reader.readexactly(head_len + body_len + 4)

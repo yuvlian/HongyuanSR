@@ -1,4 +1,7 @@
 import asyncio
+from common import db
+from common import srtools
+from common.util import AsyncFs, Log
 from proto.cmd import CmdRegistry
 from .handler import HANDLER_MAP, DUMMY_MAP
 from .connection import Connection
@@ -8,9 +11,27 @@ async def handle_client(
     reader: asyncio.StreamReader, writer: asyncio.StreamWriter
 ) -> None:
     addr = writer.get_extra_info("peername")
-    c = Connection(reader, writer)
+    c: Connection = None
 
     try:
+        my_data, did_overwrite = await AsyncFs.json_parse_or_write(
+            db.FILE_NAME, db.DB, db.DB.default(), overwrite_invalid=True
+        )
+        if did_overwrite:
+            Log.error(f"{db.FILE_NAME} was invalid or missing")
+            Log.warn("It has been overwritten.")
+
+        freesr_data, did_overwrite = await AsyncFs.json_parse_or_write(
+            srtools.FILE_NAME,
+            srtools.FreesrData,
+            srtools.FreesrData.default(),
+            overwrite_invalid=True,
+        )
+        if did_overwrite:
+            Log.error(f"{srtools.FILE_NAME} was invalid or missing")
+            Log.warn("It has been overwritten.")
+
+        c = Connection(reader, writer, my_data, freesr_data)
         while True:
             try:
                 pkt = await c.read_packet()
@@ -20,9 +41,9 @@ async def handle_client(
 
             try:
                 cmd_name = CmdRegistry.get_name(cmd)
-                print(f"got {cmd_name} ({cmd}) from {addr}\n")
+                Log.debug(f"got {cmd_name} ({cmd}) from {addr}")
             except ValueError:
-                print(f"got UnregisteredCmd ({cmd}) from {addr}\n")
+                Log.warn(f"got UnregisteredCmd ({cmd}) from {addr}")
                 continue
 
             if handler := HANDLER_MAP.get(cmd):
@@ -30,10 +51,11 @@ async def handle_client(
             elif rsp_cmd := DUMMY_MAP.get(cmd):
                 await c.send_dummy(rsp_cmd)
             else:
-                print(f"unhandled cmd: {cmd_name} ({cmd})\n")
+                Log.warn(f"unhandled cmd: {cmd_name} ({cmd})")
 
     except Exception as e:
-        print(f"err handling client {addr}: {e}\n")
+        Log.error(f"err handling client {addr}: {e}")
     finally:
-        await c.close()
-        print(f"client {addr} disconnected.\n")
+        if c:
+            await c.close()
+        Log.info(f"client {addr} disconnected.")

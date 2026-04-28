@@ -1,4 +1,4 @@
-from config import (
+from common import (
     SDKSERVER_ADDR,
     GAMESERVER_ADDR,
     ASSET_BUNDLE_URL,
@@ -41,7 +41,8 @@ async def query_gateway() -> PlainTextResponse:
         ex_resource_url=EX_RESOURCE_URL,
         lua_url=LUA_URL,
         ifix_version="0",
-        use_tcp=True,
+        # starting from 4.2 prod, hsr forces KCP.
+        # use_tcp=True,
         unk1=True,
         unk2=True,
         unk3=True,
