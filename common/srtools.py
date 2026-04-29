@@ -23,15 +23,24 @@ class Avatar(BaseModel):
     enhanced_id: Optional[int] = None
 
 
+class DynamicKey(BaseModel):
+    key: str
+    value: int
+
+
 class Blessing(BaseModel):
     level: int
     id: int
+    dynamic_key: Optional[DynamicKey] = None
+    dynamic_values: Optional[List[DynamicKey]] = None
 
 
 class Monster(BaseModel):
     monster_id: int
     amount: int
     level: int
+    cur_hp: Optional[int] = None
+    max_hp: Optional[int] = None
 
 
 class BattleType(StrEnum):
@@ -48,7 +57,7 @@ class BattleConfig(BaseModel):
     monsters: List[List[Monster]]
     stage_id: int
     path_resonance_id: int
-    cycle_count: int
+    cycle_count: Optional[int] = None
 
 
 class Lightcone(BaseModel):
@@ -151,7 +160,7 @@ class FreesrData(BaseModel):
                 )
             ],
             battle_config=BattleConfig(
-                battle_type="Memory",
+                battle_type="MOC",
                 blessings=[
                     Blessing(
                         id=1201,

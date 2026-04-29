@@ -2,7 +2,7 @@ import aiofiles
 import proto
 from . import srtools as srt
 from pathlib import Path
-from typing import Protocol, Tuple, TypeVar, Type
+from typing import Protocol, Tuple, TypeVar, Type, Optional, List
 from pydantic import BaseModel
 
 T = TypeVar("T", bound=BaseModel)
@@ -151,3 +151,85 @@ class FreesrUtils:
             promotion=lc.promotion,
             rank=lc.rank,
         )
+
+    @staticmethod
+    def avatar_to_battle_avatar_proto(
+        av: srt.Avatar, index: int, lc: Optional[srt.Lightcone], relics: List[srt.Relic]
+    ) -> Tuple[proto.BattleAvatar, List[proto.BattleBuff]]:
+        ba = proto.BattleAvatar()
+        ba.index = index
+        ba.avatar_type = proto.AvatarType.AVATAR_UPGRADE_AVAILABLE_TYPE
+        ba.id = av.avatar_id
+        ba.level = av.level
+        ba.rank = av.data.rank
+        ba.skilltree_list = [
+            proto.AvatarSkillTree(
+                point_id=k,
+                level=v,
+            )
+            for k, v in av.data.skills.items()
+        ]
+        ba.equipment_list = (
+            [FreesrUtils.lightcone_to_battle_equipment_proto(lc)] if lc else []
+        )
+        ba.hp = 10000
+        ba.promotion = av.promotion
+        ba.sp_bar = proto.SpBarInfo(
+            cur_sp=av.sp_value,
+            max_sp=av.sp_max,
+        )
+        ba.relic_list = [
+            FreesrUtils.relic_to_battle_relic_proto(relic) for relic in relics
+        ]
+        ba.world_level = 6
+        ba.enhanced_id = av.enhanced_id if av.enhanced_id else 0
+
+        battle_buffs = [
+            proto.BattleBuff(
+                wave_flag=0xFFFFFFFF,
+                owner_index=index,
+                level=1,
+                id=i,
+                dynamic_values={
+                    "SkillIndex": 2.0,
+                },
+            )
+            for i in av.techniques
+        ]
+
+        return ba, battle_buffs
+
+    @staticmethod
+    def monster_to_scene_monster_proto(monster: srt.Monster) -> proto.SceneMonster:
+        return proto.SceneMonster(
+            monster_id=monster.monster_id,
+            cur_hp=monster.cur_hp or 0,
+            max_hp=min(monster.max_hp or 0, monster.cur_hp or 0),
+        )
+
+    @staticmethod
+    def monsters_to_scene_monster_wave_proto(
+        wave_id: int,
+        monsters: List[srt.Monster],
+    ) -> proto.SceneMonsterWave:
+
+        wave_id = max(wave_id, 1)
+        max_level = max((m.level for m in monsters), default=95)
+
+        return proto.SceneMonsterWave(
+            battle_wave_id=wave_id,
+            monster_param=proto.SceneMonsterWaveParam(level=max_level),
+            monster_list=[
+                FreesrUtils.monster_to_scene_monster_proto(m) for m in monsters
+            ],
+        )
+
+    @staticmethod
+    def monsters_to_scene_monster_wave_protos(
+        monsters: List[List[srt.Monster]],
+    ) -> List[proto.SceneMonsterWave]:
+
+        return [
+            FreesrUtils.monsters_to_scene_monster_wave_proto(i, wave)
+            for i, wave in enumerate(monsters)
+        ]

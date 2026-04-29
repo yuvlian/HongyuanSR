@@ -1,8 +1,34 @@
-### tutorial
+# HongyuanSR
 
-#### step 1: install uv from https://docs.astral.sh/uv/#installation
+answer me, jia baoyu. what does hsr need?
 
-#### step 2: clone this repo
+<img src="./.screenshots/lua.PNG" width="480">
+<img src="./.screenshots/sparxies.PNG" width="480">
+
+## features & limitations
+
+- this ps supports the freesr-data.json from https://srtools.neonteam.dev/ for battle
+- this ps has limited support for changing stuff ingame:
+  - you cant change lightcones, relics, etc. in overworld. you can preview them though.
+  - updating freesr-data.json, HOWEVER, will still affect battle. so no need restart if you just care about battle
+  - to change mc path and such, edit in db.json and restart gameserver and game
+    - ^feel free to make a PR to add commands to fix this inconvenience, can easily be done with change lineup name request instead of bot chat
+- this ps has custom battle lineup support (so u can have like 10 sparxie in 1 lineup) through db.json
+- this ps can "run" lua. see main.lua and player heartbeat handler if curious.
+- lineup change is kinda scuffed, but it won't brick your game.
+  - it's just a minor inconvenience where you have to switch to a diff character for the lineup to visually update
+  - but even if it didn't visually update, it will still take effect in battle
+- some buffs are hardcoded (like global buffs) or hardcoded for 1st character in lineup (like cerydra's and DHPT's technique)
+- and many more i guess. idk, idc. im too lazy to add more things. again, feel free to make a PR. or open an issue and pray its enough for me to care lol
+
+oh and, if game updates, you need to update .proto file and CmdId.json, which you can get from https://github.com/yuvlian/proto-archive, don't forget to recompile, ofc.
+
+
+## tutorial
+
+### step 1: install uv from https://docs.astral.sh/uv/#installation
+
+### step 2: clone this repo
   - git clone https://github.com/yuvlian/hongyuansr
   - cd hongyuansr
 
@@ -13,16 +39,18 @@
 
 note: you have to compile kcp yourself if you're not on windows
 
-#### step 3: download protoc (NOT protobuf) from https://github.com/protocolbuffers/protobuf/releases and then add to env variables.
+### step 3: download protoc (NOT protobuf) from https://github.com/protocolbuffers/protobuf/releases and then add to PATH env variables.
 
-#### step 4: compile protos. run in hongyuan sr terminal.
+### step 4: compile protos. run in hongyuan sr terminal.
   - uv run protoc -I . --python_betterproto2_out=./proto StarRail.proto
 
-#### step 5: open one more terminal in hongyuansr and run
-  - terminal 1: uv run -m gameserver
-  - terminal 2: uv run -m sdkserver
+### step 5: start the server. you can do that by running:
+  - uv run -m gameserver
+  - uv run -m sdkserver
 
-#### step 5: enable ur proxy or idk use a redirect patch
+make sure kcpshimmy is running properly. or any other kcp shim.
+
+### step 6: enable ur proxy or idk use a redirect patch
 if ur using fiddler classic:
 ```c#
 import System;
@@ -42,23 +70,6 @@ class Handlers
 };
 ```
 
-#### step 6: open game and have fun
+### step 7: open game and have fun
 
-
-### features
-
-NOTE: WIP, battle isnt added yet & lineup is still broken
-
-- this ps supports the freesr-data.json from https://srtools.neonteam.dev/ for battle
-- this ps has limited support for changing stuff ingame:
-  - you cant change lightcones, relics, etc. in overworld
-  - however, updating freesr-data.json will affect battle
-  - to change mc path and such, edit in db.json and restart gameserver
-- custom battle lineup support (so u can have like 10 sparxie) through db.json
-- helper for running lua. see main.lua and player heartbeat handler
-
-and more i guess idk, its very basic and idc to add or fix stuff
-
-oh and, if game updates, you need to update proto file and CmdId.json, you can get from https://github.com/yuvlian/proto-archive
-
-dont forget to recompile, ofc.
+oh right, you can just run start.bat next time to automatically start shim, gameserver, and sdkserver.

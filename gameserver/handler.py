@@ -156,6 +156,9 @@ DUMMY_MAP: dict[int, int] = {
         "UpdateTrackMainMission",
         "GetMail",
         "GetShopList",
+        "GetFriendListInfo",
+        "GetFriendAssistList",
+        "GetAssistList",
     ]
 }
 

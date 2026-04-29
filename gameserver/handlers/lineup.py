@@ -3,6 +3,7 @@ from proto import (
     ChangeLineupLeaderScRsp,
     GetAllLineupDataScRsp,
     GetCurLineupDataScRsp,
+    GetLineupAvatarDataScRsp,
     SetLineupNameCsReq,
     SetLineupNameScRsp,
     JoinLineupCsReq,
@@ -16,6 +17,7 @@ from proto import (
     SyncLineupNotify,
     LineupInfo,
     LineupAvatar,
+    LineupAvatarData,
     # LineupSlotData,
     ExtraLineupType,
     SpBarInfo,
@@ -157,4 +159,20 @@ async def on_replace_lineup(c: Connection, pkt: Packet) -> None:
             c.db.lineup.overworld_lineup[slot] = 0
 
     await refresh_lineup(c)
+    await c.send_packet(rsp)
+
+
+@handler
+async def on_get_lineup_avatar_data(c: Connection, pkt: Packet) -> None:
+    rsp = GetLineupAvatarDataScRsp(
+        avatar_data_list=[
+            LineupAvatarData(
+                id=i,
+                hp=10000,
+                avatar_type=AvatarType.AVATAR_FORMAL_TYPE,
+            )
+            for i in c.db.lineup.overworld_lineup.values()
+        ]
+    )
+
     await c.send_packet(rsp)

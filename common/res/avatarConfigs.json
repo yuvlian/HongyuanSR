@@ -1,0 +1,509 @@
+{
+    "avatarConfigs": {
+        "1001": {
+            "weaknessBuffId": 1000113,
+            "techniqueBuffIds": [
+                100101
+            ]
+        },
+        "1002": {
+            "weaknessBuffId": 1000115,
+            "techniqueBuffIds": [
+                100201
+            ]
+        },
+        "1003": {
+            "weaknessBuffId": 1000112,
+            "techniqueBuffIds": [
+                100301
+            ]
+        },
+        "1004": {
+            "weaknessBuffId": 1000117,
+            "techniqueBuffIds": [
+                100401
+            ]
+        },
+        "1005": {
+            "weaknessBuffId": 1000114,
+            "techniqueBuffIds": [
+                100501
+            ]
+        },
+        "1006": {
+            "weaknessBuffId": 1000116,
+            "techniqueBuffIds": [
+                100601
+            ]
+        },
+        "1008": {
+            "weaknessBuffId": 1000114,
+            "techniqueBuffIds": [
+                100801
+            ]
+        },
+        "1009": {
+            "weaknessBuffId": 1000112,
+            "techniqueBuffIds": [
+                100901
+            ]
+        },
+        "1013": {
+            "weaknessBuffId": 1000113,
+            "techniqueBuffIds": [
+                101301
+            ]
+        },
+        "1014": {
+            "weaknessBuffId": 1000115,
+            "techniqueBuffIds": [
+                101401
+            ]
+        },
+        "1015": {
+            "weaknessBuffId": 1000116,
+            "techniqueBuffIds": [
+                101501
+            ]
+        },
+        "1101": {
+            "weaknessBuffId": 1000115,
+            "techniqueBuffIds": [
+                110101
+            ]
+        },
+        "1102": {
+            "weaknessBuffId": 1000116,
+            "techniqueBuffIds": [
+                110201
+            ]
+        },
+        "1103": {
+            "weaknessBuffId": 1000114,
+            "techniqueBuffIds": [
+                110301
+            ]
+        },
+        "1104": {
+            "weaknessBuffId": 1000113,
+            "techniqueBuffIds": [
+                110401
+            ]
+        },
+        "1105": {
+            "weaknessBuffId": 1000111,
+            "techniqueBuffIds": [
+                110501
+            ]
+        },
+        "1106": {
+            "weaknessBuffId": 1000113,
+            "techniqueBuffIds": [
+                110601
+            ]
+        },
+        "1107": {
+            "weaknessBuffId": 1000111,
+            "techniqueBuffIds": [
+                110701
+            ]
+        },
+        "1108": {
+            "weaknessBuffId": 1000115,
+            "techniqueBuffIds": [
+                110801
+            ]
+        },
+        "1109": {
+            "weaknessBuffId": 1000112,
+            "techniqueBuffIds": [
+                110901
+            ]
+        },
+        "1110": {
+            "weaknessBuffId": 1000116,
+            "techniqueBuffIds": [
+                111001
+            ]
+        },
+        "1111": {
+            "weaknessBuffId": 1000111,
+            "techniqueBuffIds": [
+                111101
+            ]
+        },
+        "1112": {
+            "weaknessBuffId": 1000112,
+            "techniqueBuffIds": [
+                111201
+            ]
+        },
+        "1201": {
+            "weaknessBuffId": 1000116,
+            "techniqueBuffIds": [
+                120101
+            ]
+        },
+        "1202": {
+            "weaknessBuffId": 1000114,
+            "techniqueBuffIds": []
+        },
+        "1203": {
+            "weaknessBuffId": 1000117,
+            "techniqueBuffIds": [
+                120301
+            ]
+        },
+        "1204": {
+            "weaknessBuffId": 1000114,
+            "techniqueBuffIds": [
+                120401
+            ]
+        },
+        "1205": {
+            "weaknessBuffId": 1000115,
+            "techniqueBuffIds": [
+                120501
+            ]
+        },
+        "1206": {
+            "weaknessBuffId": 1000111,
+            "techniqueBuffIds": [
+                120601
+            ]
+        },
+        "1207": {
+            "weaknessBuffId": 1000117,
+            "techniqueBuffIds": [
+                120701
+            ]
+        },
+        "1208": {
+            "weaknessBuffId": 1000116,
+            "techniqueBuffIds": [
+                120802
+            ]
+        },
+        "1209": {
+            "weaknessBuffId": 1000113,
+            "techniqueBuffIds": [
+                120901
+            ]
+        },
+        "1210": {
+            "weaknessBuffId": 1000112,
+            "techniqueBuffIds": [
+                121001
+            ]
+        },
+        "1211": {
+            "weaknessBuffId": 1000114,
+            "techniqueBuffIds": [
+                121101
+            ]
+        },
+        "1212": {
+            "weaknessBuffId": 1000113,
+            "techniqueBuffIds": [
+                121201
+            ]
+        },
+        "1213": {
+            "weaknessBuffId": 1000117,
+            "techniqueBuffIds": [
+                121301
+            ]
+        },
+        "1214": {
+            "weaknessBuffId": 1000116,
+            "techniqueBuffIds": [
+                121401
+            ]
+        },
+        "1215": {
+            "weaknessBuffId": 1000111,
+            "techniqueBuffIds": [
+                121501
+            ]
+        },
+        "1217": {
+            "weaknessBuffId": 1000115,
+            "techniqueBuffIds": [
+                121701
+            ]
+        },
+        "1218": {
+            "weaknessBuffId": 1000112,
+            "techniqueBuffIds": [
+                121801
+            ]
+        },
+        "1220": {
+            "weaknessBuffId": 1000115,
+            "techniqueBuffIds": [
+                122001,
+                122002
+            ]
+        },
+        "1221": {
+            "weaknessBuffId": 1000111,
+            "techniqueBuffIds": [
+                122101
+            ]
+        },
+        "1222": {
+            "weaknessBuffId": 1000112,
+            "techniqueBuffIds": [
+                122201
+            ]
+        },
+        "1223": {
+            "weaknessBuffId": 1000114,
+            "techniqueBuffIds": [
+                122301,
+                122304
+            ]
+        },
+        "1224": {
+            "weaknessBuffId": 1000117,
+            "techniqueBuffIds": [
+                122401,
+                122402
+            ]
+        },
+        "1225": {
+            "weaknessBuffId": 1000112,
+            "techniqueBuffIds": [
+                122501
+            ]
+        },
+        "1301": {
+            "weaknessBuffId": 1000112,
+            "techniqueBuffIds": [
+                130101
+            ]
+        },
+        "1302": {
+            "weaknessBuffId": 1000111,
+            "techniqueBuffIds": [
+                130201
+            ]
+        },
+        "1303": {
+            "weaknessBuffId": 1000113,
+            "techniqueBuffIds": [
+                130301,
+                130303
+            ]
+        },
+        "1304": {
+            "weaknessBuffId": 1000117,
+            "techniqueBuffIds": [
+                130401,
+                130402,
+                130403
+            ]
+        },
+        "1305": {
+            "weaknessBuffId": 1000117,
+            "techniqueBuffIds": [
+                130501
+            ]
+        },
+        "1306": {
+            "weaknessBuffId": 1000116,
+            "techniqueBuffIds": [
+                130602
+            ]
+        },
+        "1307": {
+            "weaknessBuffId": 1000115,
+            "techniqueBuffIds": [
+                130701
+            ]
+        },
+        "1308": {
+            "weaknessBuffId": 1000114,
+            "techniqueBuffIds": [
+                130803
+            ]
+        },
+        "1309": {
+            "weaknessBuffId": 1000111,
+            "techniqueBuffIds": [
+                130902
+            ]
+        },
+        "1310": {
+            "weaknessBuffId": 1000112,
+            "techniqueBuffIds": [
+                131001,
+                131002
+            ]
+        },
+        "1312": {
+            "weaknessBuffId": 1000113,
+            "techniqueBuffIds": [
+                131201
+            ]
+        },
+        "1313": {
+            "weaknessBuffId": 1000117,
+            "techniqueBuffIds": [
+                131301
+            ]
+        },
+        "1314": {
+            "weaknessBuffId": 1000116,
+            "techniqueBuffIds": [
+                131401
+            ]
+        },
+        "1315": {
+            "weaknessBuffId": 1000111,
+            "techniqueBuffIds": [
+                131501,
+                131502
+            ]
+        },
+        "1317": {
+            "weaknessBuffId": 1000117,
+            "techniqueBuffIds": [
+                131701
+            ]
+        },
+        "1321": {
+            "weaknessBuffId": 1000112,
+            "techniqueBuffIds": [
+                132101
+            ]
+        },
+        "1401": {
+            "weaknessBuffId": 1000113,
+            "techniqueBuffIds": [
+                140101,
+                140102
+            ]
+        },
+        "1402": {
+            "weaknessBuffId": 1000114,
+            "techniqueBuffIds": [
+                140201
+            ]
+        },
+        "1403": {
+            "weaknessBuffId": 1000116,
+            "techniqueBuffIds": [
+                140301
+            ]
+        },
+        "1404": {
+            "weaknessBuffId": 1000117,
+            "techniqueBuffIds": [
+                140401
+            ]
+        },
+        "1405": {
+            "weaknessBuffId": 1000115,
+            "techniqueBuffIds": [
+                140501
+            ]
+        },
+        "1406": {
+            "weaknessBuffId": 1000116,
+            "techniqueBuffIds": [
+                140601
+            ]
+        },
+        "1407": {
+            "weaknessBuffId": 1000116,
+            "techniqueBuffIds": [
+                140701,
+                140703
+            ]
+        },
+        "1408": {
+            "weaknessBuffId": 1000111,
+            "techniqueBuffIds": [
+                140801
+            ]
+        },
+        "1409": {
+            "weaknessBuffId": 1000115,
+            "techniqueBuffIds": [
+                140901
+            ]
+        },
+        "1410": {
+            "weaknessBuffId": 1000111,
+            "techniqueBuffIds": [
+                141001
+            ]
+        },
+        "1412": {
+            "weaknessBuffId": 1000115,
+            "techniqueBuffIds": [
+                141201
+            ]
+        },
+        "1413": {
+            "weaknessBuffId": 1000113,
+            "techniqueBuffIds": [
+                141301
+            ]
+        },
+        "1414": {
+            "weaknessBuffId": 1000111,
+            "techniqueBuffIds": [
+                141401,
+                141402
+            ]
+        },
+        "1415": {
+            "weaknessBuffId": 1000113,
+            "techniqueBuffIds": [
+                141501,
+                141502,
+                141503
+            ]
+        },
+        "8001": {
+            "weaknessBuffId": 1000111,
+            "techniqueBuffIds": []
+        },
+        "8002": {
+            "weaknessBuffId": 1000111,
+            "techniqueBuffIds": []
+        },
+        "8003": {
+            "weaknessBuffId": 1000112,
+            "techniqueBuffIds": [
+                800301
+            ]
+        },
+        "8004": {
+            "weaknessBuffId": 1000112,
+            "techniqueBuffIds": []
+        },
+        "8005": {
+            "weaknessBuffId": 1000117,
+            "techniqueBuffIds": [
+                800501
+            ]
+        },
+        "8006": {
+            "weaknessBuffId": 1000117,
+            "techniqueBuffIds": []
+        },
+        "8007": {
+            "weaknessBuffId": 1000113,
+            "techniqueBuffIds": [
+                800701
+            ]
+        },
+        "8008": {
+            "weaknessBuffId": 1000113,
+            "techniqueBuffIds": []
+        }
+    }
+}

@@ -1,4 +1,5 @@
 import asyncio
+import traceback
 from common import db
 from common import srtools
 from common.util import AsyncFs, Log
@@ -47,14 +48,21 @@ async def handle_client(
                 continue
 
             if handler := HANDLER_MAP.get(cmd):
-                await handler(c, pkt)
+                try:
+                    await handler(c, pkt)
+                except Exception as e:
+                    Log.error(f"handler error {cmd_name} ({cmd}): {e}")
+                    Log.error(f"==== TRACEBACK =====\n{traceback.format_exc()}")
+                    Log.error("==== TRACEBACK =====")
             elif rsp_cmd := DUMMY_MAP.get(cmd):
                 await c.send_dummy(rsp_cmd)
             else:
                 Log.warn(f"unhandled cmd: {cmd_name} ({cmd})")
 
     except Exception as e:
-        Log.error(f"err handling client {addr}: {e}")
+        Log.error(f"client error {addr}: {e}")
+        Log.error(f"==== TRACEBACK =====\n{traceback.format_exc()}")
+        Log.error("==== TRACEBACK =====")
     finally:
         if c:
             await c.close()
