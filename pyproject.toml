@@ -14,4 +14,3 @@ dependencies = [
 
 [tool.ruff.lint.per-file-ignores]
 "gameserver/handler.py" = ["E402", "F401"]
-"gameserver/handlers/battle.py" = ["F841"]
