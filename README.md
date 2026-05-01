@@ -51,7 +51,7 @@ note: you have to compile kcp yourself if you're not on windows
 make sure kcpshimmy is running properly. or any other kcp shim.
 
 ### step 6: enable ur proxy or idk use a redirect patch
-if ur using fiddler classic:
+if ur using fiddler classic (be sure to enable https decryption):
 ```c#
 import System;
 import System.Windows.Forms;

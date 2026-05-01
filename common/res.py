@@ -1,13 +1,9 @@
-from typing import List, Dict, Optional
+from typing import List, Dict
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 from .util import AsyncFs
 
 FILE_DIR = "./common/res"
-
-# NOTE:
-# this module isn't really used,
-# it's just so that if you wanna have res, you already have a skeleton for it
 
 
 class AvatarConfig(BaseModel):
@@ -23,16 +19,18 @@ class AvatarConfigs(BaseModel):
     avatar_configs: Dict[int, AvatarConfig]
 
 
-AVATAR_CONFIGS: Optional[Dict[int, AvatarConfig]] = None
+AVATAR_CONFIGS: Dict[int, AvatarConfig] = {}
+_loaded = False
 
 
 async def load_res():
-    global AVATAR_CONFIGS
-    if AVATAR_CONFIGS is None:
+    global _loaded
+    if not _loaded:
         k, _ = await AsyncFs.json_parse_or_write(
             f"{FILE_DIR}/avatarConfigs.json",
             AvatarConfigs,
             AvatarConfigs(avatar_configs={}),
             False,
         )
-        AVATAR_CONFIGS = k.avatar_configs
+        AVATAR_CONFIGS.update(k.avatar_configs)
+        _loaded = True

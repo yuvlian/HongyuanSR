@@ -62,16 +62,20 @@ async def create_battle_info(
     }
 
     dahlia_exists = False
-    first_in_lineup = 0
+    first_avatar_id = 0
+    first_avatar_idx = 0
 
     # battle avatars
     for aidx, aid in lineup.items():
-        if first_in_lineup == 0:
-            first_in_lineup = aid
+        if first_avatar_id == 0:
+            first_avatar_id = aid
+            first_avatar_idx = aidx
+
         if aid == 8001:
             aid = db.multi_path.tb_multi_path.to_int()
         if aid == 1001:
             aid = db.multi_path.march_multi_path.to_int()
+
         if not dahlia_exists:
             dahlia_exists = aid == 1321
 
@@ -86,19 +90,19 @@ async def create_battle_info(
                 caster_id > 0
                 and aidx == (caster_id - 1)
                 and 1000119 not in av.techniques
+                and (avc := AVATAR_CONFIGS.get(aid))
             ):
-                if avc := AVATAR_CONFIGS.get(aid):
-                    battle_info.buff_list.append(
-                        BattleBuff(
-                            id=avc.weakness_buff_id,
-                            level=1,
-                            owner_index=aidx,
-                            wave_flag=0xFFFFFFFF,
-                            dynamic_values={
-                                "SkillIndex": float(skill_idx),
-                            },
-                        )
+                battle_info.buff_list.append(
+                    BattleBuff(
+                        id=avc.weakness_buff_id,
+                        level=1,
+                        owner_index=aidx,
+                        wave_flag=0xFFFFFFFF,
+                        dynamic_values={
+                            "SkillIndex": float(skill_idx),
+                        },
                     )
+                )
 
             battle_info.battle_avatar_list.append(battle_av)
 
@@ -187,26 +191,15 @@ async def create_battle_info(
 
         battle_info.battle_target_info[5] = BattleTargetList(
             battle_target_list=[
-                BattleTarget(
-                    id=2001,
-                    progress=0,
-                ),
-                BattleTarget(
-                    id=2002,
-                    progress=0,
-                ),
+                BattleTarget(id=2001, progress=0),
+                BattleTarget(id=2002, progress=0),
             ]
         )
 
     # apoc shadow
     if battle_type == BattleType.AS:
         battle_info.battle_target_info[1] = BattleTargetList(
-            battle_target_list=[
-                BattleTarget(
-                    id=90005,
-                    progress=0,
-                )
-            ]
+            battle_target_list=[BattleTarget(id=90005, progress=0)]
         )
 
     battle_info.monster_wave_list = FreesrUtils.monsters_to_scene_monster_wave_protos(
@@ -215,29 +208,71 @@ async def create_battle_info(
 
     # hardcode some buffs for first unit in lineup & global buffs
     has_sw_global, has_castorice_global = False, False
-    for i in range(0, len(battle_info.buff_list)):
+    is_calyx = caster_id == 0 and skill_idx == 0
+    first_avatar_attack_id = (
+        avc.weakness_buff_id
+        if first_avatar_id != 0 and (avc := AVATAR_CONFIGS.get(first_avatar_id))
+        else 0
+    )
+
+    has_replaced = False
+    dahlia_buffs = []
+    for i, buff in enumerate(battle_info.buff_list):
+        is_last = i == len(battle_info.buff_list) - 1
+
         if not has_sw_global:
-            has_sw_global = battle_info.buff_list[i].id == 150602
+            has_sw_global = buff.id == 150602
         if not has_castorice_global:
-            has_castorice_global = battle_info.buff_list[i].id == 140703
+            has_castorice_global = buff.id == 140703
+
         # cerydra & DHPT technique
-        if (
-            battle_info.buff_list[i].id == 141202
-            or battle_info.buff_list[i].id == 141403
-        ):
-            battle_info.buff_list[i].owner_index = (
-                first_in_lineup
-                if first_in_lineup != 0
-                else battle_info.buff_list[i].owner_index
-            )
+        if buff.id == 141202 or buff.id == 141403:
+            if first_avatar_idx != 0:
+                buff.owner_index = first_avatar_idx
             continue
-        # TODO: dance partner
-        if dahlia_exists and battle_info.buff_list[i].id == 0xFFFFFFFF:
-            battle_info.buff_list[i].owner_index = (
-                first_in_lineup
-                if first_in_lineup != 0
-                else battle_info.buff_list[i].owner_index
+
+        # this is actually useless because there is 0 attack buff id in calyx but idc
+        if (
+            dahlia_exists
+            and is_calyx
+            and 1000111 <= buff.id <= 1000117
+            and not has_replaced
+            and first_avatar_attack_id != 0
+        ):
+            buff.id = first_avatar_attack_id
+            buff.owner_index = first_avatar_idx
+            has_replaced = True
+
+        if (
+            dahlia_exists
+            and is_calyx
+            and not has_replaced
+            and first_avatar_attack_id != 0
+            and is_last
+        ):
+            dahlia_buffs.append(
+                BattleBuff(
+                    id=1000121,
+                    level=1,
+                    wave_flag=0xFFFFFFFF,
+                    target_index_list=[first_avatar_idx],
+                )
             )
+
+            dahlia_buffs.append(
+                BattleBuff(
+                    id=first_avatar_attack_id,
+                    level=1,
+                    wave_flag=0xFFFFFFFF,
+                    target_index_list=[first_avatar_idx],
+                    dynamic_values={
+                        "SkillIndex": float(first_avatar_idx),
+                    },
+                )
+            )
+
+    if dahlia_buffs:
+        battle_info.buff_list.extend(dahlia_buffs)
 
     if not has_castorice_global:
         battle_info.buff_list.append(
