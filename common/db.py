@@ -112,7 +112,7 @@ class DB(BaseModel):
                 tb_multi_path=MultiPath.STELLE_DESTRUCTION,
             ),
             lineup=PlayerLineup(
-                overworld_lineup={0: 1001, 1: 1002, 2: 1003, 4: 1004},
+                overworld_lineup={0: 1001, 1: 1002, 2: 1003, 3: 1004},
                 custom_battle_lineup=None,
             ),
         )
