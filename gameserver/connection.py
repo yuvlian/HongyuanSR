@@ -69,6 +69,7 @@ class Connection:
             await AsyncFs.write_to_file(
                 database.FILE_NAME, self.db.model_dump_json(indent=2)
             )
+            self.db_last_modified = SyncFs.get_last_modified_time(database.FILE_NAME)
         except Exception as e:
             Log.error(f"failed saving db: {e}")
 

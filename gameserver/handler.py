@@ -1,5 +1,5 @@
 from proto.cmd import CmdRegistry
-from typing import Callable, TypeVar, TYPE_CHECKING, Awaitable
+from typing import Callable, Dict, TypeVar, TYPE_CHECKING, Awaitable
 
 if TYPE_CHECKING:
     from .connection import Connection
@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 HandlerFunc = Callable[["Connection", "Packet"], Awaitable[None]]
 T = TypeVar("T", bound=HandlerFunc)
 
-HANDLER_MAP: dict[int, HandlerFunc] = {}
+HANDLER_MAP: Dict[int, HandlerFunc] = {}
 
 
 # example usage:
@@ -50,7 +50,7 @@ from .handlers import (
     recommend,
 )
 
-DUMMY_MAP: dict[int, int] = {
+DUMMY_MAP: Dict[int, int] = {
     CmdRegistry.get_id(n + "CsReq"): CmdRegistry.get_id(n + "ScRsp")
     for n in [
         "GetPreAvatarGrowthInfo",

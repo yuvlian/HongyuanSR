@@ -132,19 +132,29 @@ class FreesrData(BaseModel):
                     equip_avatar=1001,
                     internal_uid=1,
                     level=15,
-                    relic_id=55001,
+                    relic_id=61321,
                     main_affix_id=1,
-                    relic_set_id=550,
+                    relic_set_id=132,
                     sub_affixes=[
                         SubAffix(
                             count=1,
-                            step=3,
-                            sub_affix_id=101,
+                            step=2,
+                            sub_affix_id=4,
                         ),
                         SubAffix(
                             count=1,
                             step=2,
-                            sub_affix_id=102,
+                            sub_affix_id=7,
+                        ),
+                        SubAffix(
+                            count=6,
+                            step=12,
+                            sub_affix_id=8,
+                        ),
+                        SubAffix(
+                            count=1,
+                            step=2,
+                            sub_affix_id=9,
                         ),
                     ],
                 )
@@ -152,8 +162,8 @@ class FreesrData(BaseModel):
             lightcones=[
                 Lightcone(
                     equip_avatar=1001,
-                    internal_uid=10001,
-                    item_id=20000,
+                    internal_uid=0,
+                    item_id=24005,
                     level=80,
                     promotion=6,
                     rank=5,
@@ -163,48 +173,35 @@ class FreesrData(BaseModel):
                 battle_type="MOC",
                 blessings=[
                     Blessing(
-                        id=1201,
-                        level=1,
-                    ),
-                    Blessing(
-                        id=1202,
+                        id=3030146,
                         level=1,
                     ),
                 ],
-                custom_stats=[
-                    SubAffix(
-                        count=2,
-                        step=3,
-                        sub_affix_id=101,
-                    )
-                ],
+                custom_stats=[],
                 monsters=[
                     [
                         Monster(
-                            monster_id=100001,
-                            amount=2,
+                            monster_id=5023020,
+                            amount=1,
                             level=95,
-                        )
+                        ),
+                        Monster(
+                            monster_id=5013060,
+                            amount=1,
+                            level=95,
+                        ),
                     ],
                     [
                         Monster(
-                            monster_id=100002,
+                            monster_id=5014030,
                             amount=1,
-                            level=98,
+                            level=95,
                         )
                     ],
                 ],
-                stage_id=101,
-                path_resonance_id=1200,
+                stage_id=30123122,
+                path_resonance_id=0,
                 cycle_count=30,
             ),
-            loadout=[
-                Loadout(
-                    name="Default",
-                    avatar_id=1001,
-                    relic_list=[
-                        "55001",
-                    ],
-                )
-            ],
+            loadout=[],
         )

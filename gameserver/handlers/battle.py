@@ -274,7 +274,7 @@ async def create_battle_info(
     if dahlia_buffs:
         battle_info.buff_list.extend(dahlia_buffs)
 
-    if not has_castorice_global:
+    if not has_castorice_global and c.db.global_buff.castorice:
         battle_info.buff_list.append(
             BattleBuff(
                 id=140703,
@@ -285,7 +285,7 @@ async def create_battle_info(
             )
         )
 
-    if not has_sw_global:
+    if not has_sw_global and c.db.global_buff.sw_999:
         battle_info.buff_list.append(
             BattleBuff(
                 id=150602,

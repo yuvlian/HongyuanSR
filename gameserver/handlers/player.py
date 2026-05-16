@@ -7,6 +7,8 @@ from proto import (
     PlayerLoginScRsp,
     PlayerBasicInfo,
     GetBasicInfoScRsp,
+    SetSignatureCsReq,
+    SetSignatureScRsp,
     PlayerSettingInfo,
     GetPlayerBoardDataScRsp,
     HeadFrameInfo,
@@ -17,6 +19,8 @@ from ..handler import handler
 from ..connection import Connection
 from ..packet import Packet
 from common.util import AsyncFs, Log
+from collections import OrderedDict
+import asyncio
 
 
 @handler
@@ -125,4 +129,72 @@ async def on_get_player_board_data(c: Connection, pkt: Packet) -> None:
         display_avatar_vec=DisplayAvatarVec(is_display=False),
     )
 
+    await c.send_packet(rsp)
+
+
+@handler
+async def on_set_signature(c: Connection, pkt: Packet) -> None:
+    # TODO: impl tb/m7 path commands. need to fix lineup stuff first... so lazy.
+    # NOTE: max len of signature is 50 bytes
+    req = c.decode_packet(pkt, SetSignatureCsReq)
+    string = req.signature.lower()
+
+    # tb path
+    if string.startswith("tb"):
+        pass
+
+    # march path
+    elif string.startswith("m7"):
+        pass
+
+    # castorice global buff
+    # example usages:
+    #    gb cast on
+    #    gb cast off
+    elif string.startswith("gb cast"):
+        new_value = "1" in string or "on" in string or "true" in string
+
+        if c.db.global_buff.castorice != new_value:
+            c.db.global_buff.castorice = new_value
+            asyncio.create_task(c.save_db())
+
+    # sw999 global buff
+    # example usages:
+    #    gb sw on
+    #    gb sw off
+    elif string.startswith("gb sw"):
+        new_value = "1" in string or "on" in string or "true" in string
+
+        if c.db.global_buff.sw_999 != new_value:
+            c.db.global_buff.sw_999 = new_value
+            asyncio.create_task(c.save_db())
+
+    # custom battle lineup
+    # example usages:
+    #    cl clear
+    #    cl add 1001
+    #    cl add 1001 1002 1003
+    elif string.startswith("cl"):
+        parts = string.split()
+
+        if len(parts) < 2:
+            return
+
+        if parts[1] == "clear":
+            c.db.lineup.custom_battle_lineup = None
+            asyncio.create_task(c.save_db())
+
+        elif parts[1] == "add" and len(parts) > 2:
+            lineup = c.db.lineup.custom_battle_lineup or OrderedDict()
+            for avatar_id_str in parts[2:]:
+                try:
+                    avatar_id = int(avatar_id_str)
+                    next_idx = max(lineup.keys()) + 1 if lineup else 0
+                    lineup[next_idx] = avatar_id
+                except ValueError:
+                    continue
+            c.db.lineup.custom_battle_lineup = lineup
+            asyncio.create_task(c.save_db())
+
+    rsp = SetSignatureScRsp(signature="三生縁分 三千世界 三世因果")
     await c.send_packet(rsp)

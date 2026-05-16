@@ -76,12 +76,18 @@ class PlayerLineup(BaseModel):
     custom_battle_lineup: Optional[OrderedDict[int, int]] = None
 
 
+class GlobalBuff(BaseModel):
+    castorice: bool
+    sw_999: bool
+
+
 class DB(BaseModel):
     scene_id: int
     calyx: Optional[CalyxEntity] = None
     player: PlayerEntity
     multi_path: PlayerMultiPath
     lineup: PlayerLineup
+    global_buff: GlobalBuff
 
     @staticmethod
     def default() -> "DB":
@@ -114,5 +120,9 @@ class DB(BaseModel):
             lineup=PlayerLineup(
                 overworld_lineup={0: 1001, 1: 1002, 2: 1003, 3: 1004},
                 custom_battle_lineup=None,
+            ),
+            global_buff=GlobalBuff(
+                castorice=True,
+                sw_999=True,
             ),
         )
