@@ -35,14 +35,19 @@ async def handle_client(
         c = Connection(reader, writer, my_data, freesr_data)
         while True:
             try:
-                pkt = await c.read_packet()
+                # plr heartbeat is roughly every 5 secs
+                # timeout cuz game can close w/o sending logout
+                pkt = await asyncio.wait_for(c.read_packet(), timeout=10.0)
                 cmd = pkt.cmd
-            except EOFError:
+            except EOFError, asyncio.TimeoutError:
+                Log.debug(f"EOFError or asyncio.TimeoutError ({addr})")
                 break
 
             try:
                 cmd_name = CmdRegistry.get_name(cmd)
                 Log.debug(f"got {cmd_name} ({cmd}) from {addr}")
+                if cmd_name == "PlayerLogoutCsReq":
+                    break
             except ValueError:
                 Log.warn(f"got UnregisteredCmd ({cmd}) from {addr}")
                 continue
