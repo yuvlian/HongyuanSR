@@ -51,9 +51,7 @@ oh and, if game updates, you need to update .proto file and CmdId.json, which yo
 ### step 5: start the server. you can do that by running:
   1. `uv run -m gameserver`
   2. `uv run -m sdkserver`
-  3. `cd kcpshimmy` then `uv run -m shim.py`
-
-NOTE: you may need to compile ikcp yourself if you're on linux
+  3. `cd kcpshimmy` then `uv run shim.py`
 
 ### step 6: enable ur proxy or idk use a redirect patch
 if ur using fiddler classic (be sure to enable https decryption):

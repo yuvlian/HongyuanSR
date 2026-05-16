@@ -135,7 +135,7 @@ DUMMY_MAP: dict[int, int] = {
         "MusicRhythmData",
         "GetFightFestData",
         "DifficultyAdjustmentGetData",
-        "ChimeraGetData",
+        # "ChimeraGetData",
         "MarbleGetData",
         "GetRechargeBenefitInfo",
         "ParkourGetData",
@@ -159,13 +159,11 @@ DUMMY_MAP: dict[int, int] = {
         "GetFriendListInfo",
         "GetFriendAssistList",
         "GetAssistList",
+        "GetLevelRewardTakenList",
     ]
 }
 
 # doesnt follow pattern for some reason
-DUMMY_MAP[CmdRegistry.get_id("GetLevelRewardGetListReq")] = CmdRegistry.get_id(
-    "GetLevelRewardTakenListScRsp"
-)
 DUMMY_MAP[CmdRegistry.get_id("UpdateServerPrefsCsReq")] = CmdRegistry.get_id(
     "UpdateServerPrefsDataScRsp"
 )
