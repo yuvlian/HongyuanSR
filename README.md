@@ -1,78 +1,111 @@
-# HongyuanSR
+# echium-server
 
-answer me, jia baoyu. what does hsr need?
+Honkai: Star Rail private server (4.4.55)
 
-<img src="./.screenshots/lua.PNG" width="540">
-<img src="./.screenshots/sparxies.PNG" width="540">
+## General Showcase
 
-## features & limitations
+<details>
+<summary>Screenshots</summary>
 
-- this ps supports the freesr-data.json from https://srtools.neonteam.dev/ for battle
+-- --
 
-- this ps has limited support for changing stuff ingame:
-  - you cant change lightcones, relics, etc. in overworld. you can preview them though.
+| | |
+|---|---|
+| ![1](.screenshots/lua.PNG) | ![2](.screenshots/sparxies.PNG) |
+| | |
 
-  - updating freesr-data.json, HOWEVER, will still affect battle. so no need restart if you just care about battle
+</details>
 
-  - to change mc path and such, edit in db.json and restart gameserver and game
+-- --
 
-    - ^feel free to make a PR to add commands to fix this inconvenience, can easily be done with change lineup name request instead of bot chat
+<details>
+<summary>Features</summary>
 
-- this ps has custom battle lineup support (so u can have like 10 sparxie in 1 lineup) through db.json
+-- --
 
-- this ps can "run" lua. see main.lua and player heartbeat handler if curious.
+- Battle through calyx with `freesr-data.json` (from https://srtools.neonteam.dev/) support, global buffs (toggleable), etc.
 
-- lineup change is kinda scuffed, but it won't brick your game.
+- Overworld lineup works and there is custom battle lineup support (like the 10 sparxie screenshot).
 
-  - it's just a minor inconvenience where you have to switch to a diff character for the lineup to visually update
+- Lua helper.
 
-  - but even if it didn't visually update, it will still take effect in battle
+- Some commands through user signature/bio:
 
-- some buffs are hardcoded (like global buffs) or hardcoded for 1st character in lineup (like cerydra's and DHPT's technique)
+    | Command | Arguments | Description | Example |
+    | :--- | :--- | :--- | :--- |
+    | `tb` | `<id / path>` | Change Trailblazer path | `tb 8002`, `tb stelle_destruction` |
+    | `m7` | `<id / path>` | Change March 7th path | `m7 1224`, `m7 march_hunt` |
+    | `gb` | `cast` / `sw` `<on/off>` | Toggle global buffs for Castorice or Silver Wolf | `gb cast on`, `gb sw off` |
+    | `cl` | `add <id1> <id2>...` | Add characters to custom battle lineup | `cl add 1001 1001` |
+    | `cl` | `clear` | Reset custom battle lineup | `cl clear` |
+    | `sync` | - | Sync relics, lightcones, and inventory from `freesr-data.json` | `sync` |
 
-- and many more i guess. idk, idc. im too lazy to add more things. again, feel free to make a PR. or open an issue and pray its enough for me to care lol
+</details>
 
-oh and, if game updates, you need to update .proto file and CmdId.json, which you can get from https://github.com/yuvlian/proto-archive, don't forget to recompile, ofc.
+-- --
 
+<details>
+<summary>Known Limitations</summary>
 
-## tutorial
+-- --
 
-### step 1: install uv from https://docs.astral.sh/uv/#installation
+- You cannot change lightcones, relics, etc. in the game. You can preview them ingame and change them by updating the `freesr-data.json` and then running the `sync` command to update the preview.
 
-### step 2: clone this repo. recursively.
-  - `git clone --recursive https://github.com/yuvlian/hongyuansr`
-  - `cd hongyuansr`
+- Changing multi path (trailblazer, march) uses commands.
 
-### step 3: download protoc (NOT protobuf) from https://github.com/protocolbuffers/protobuf/releases and then add to PATH env variables.
+- Some buffs are hardcoded, like Cerydra's and DHPT's technique being hardcoded to the first in lineup.
 
-### step 4: compile protos. run in hongyuan sr terminal.
-  - `uv run protoc -I . --python_betterproto2_out=./proto StarRail.proto`
+- Many things aren't implemented like maps, etc.
 
-### step 5: start the server. you can do that by running:
-  1. `uv run -m gameserver`
-  2. `uv run -m sdkserver`
-  3. `cd kcpshimmy` then `uv run shim.py`
+</details>
 
-### step 6: enable ur proxy or idk use a redirect patch
-if ur using fiddler classic (be sure to enable https decryption):
-```c#
-import System;
-import System.Windows.Forms;
-import Fiddler;
-import System.Text.RegularExpressions;
+## Setup (Windows)
 
-class Handlers
-{
-    static function OnBeforeRequest(oS: Session) {
-        if (oS.host.EndsWith(".starrails.com") || oS.host.EndsWith(".hoyoverse.com") || oS.host.EndsWith(".mihoyo.com") || oS.host.EndsWith(".bhsr.com")) {
-            oS.oRequest.headers.UriScheme = "http";
-            oS.host = "127.0.0.1";
-            oS.port = 21000;
-        }
-    }
-};
-```
+<details>
+<summary>Prerequisites</summary>
 
-### step 7: open game and have fun
+-- --
 
-oh right, you can just run `start.bat` next time to automatically start shim, gameserver, and sdkserver.
+- **uv**: https://docs.astral.sh/uv/getting-started/installation/ follow the instructions there
+- **protoc**: https://github.com/protocolbuffers/protobuf/releases/download/v35.1/protoc-35.1-win64.zip extract and be sure to put it in PATH environment variable
+
+</details>
+
+-- --
+
+<details>
+<summary>Running</summary>
+
+-- --
+
+### Everything below assumes PowerShell
+
+1. `git clone https://github.com/yuvlian/echium-server --recursive`
+
+2. `cd echium-server`
+
+3. `./setup`
+
+4. `./start`
+
+</details>
+
+-- --
+
+<details>
+<summary>Playing</summary>
+
+-- --
+
+1. Download https://github.com/yuvlian/echium/releases/download/0.1.0/win-x64.7z
+
+2. Extract & copy `.dll` and `.ini` to same folder as `StarRail.exe`
+
+3. Rename `.dll` file to `umpdc.dll`
+
+4. Edit `.ini` file content as needed (the default should work just fine)
+
+5. Run game
+
+</details>
+

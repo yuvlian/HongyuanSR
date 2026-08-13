@@ -289,10 +289,10 @@ def lineup_command(c: Connection, args: list[str]) -> str | None:
         c.db.lineup.custom_battle_lineup = None
         asyncio.create_task(c.save_db())
         return "cl cleared"
-    if args[0] == "add" and len(args) > 2:
+    if args[0] == "add" and len(args) > 1:
         lineup = c.db.lineup.custom_battle_lineup or OrderedDict()
         added = 0
-        for avatar_id_str in args[2:]:
+        for avatar_id_str in args[1:]:
             try:
                 avatar_id = int(avatar_id_str)
             except ValueError:
