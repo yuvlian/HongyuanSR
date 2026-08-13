@@ -2,6 +2,8 @@
 
 Honkai: Star Rail private server (4.4.55)
 
+Incase I haven't updated this project in a while, you can try updating it yourself with https://github.com/yuvlian/hsr-proto
+
 ## General Showcase
 
 <details>
@@ -106,6 +108,52 @@ Honkai: Star Rail private server (4.4.55)
 4. Edit `.ini` file content as needed (the default should work just fine)
 
 5. Run game
+
+</details>
+
+## Project Meta
+
+<details>
+<summary>Structure</summary>
+
+-- --
+
+```
+echium-server/
+├── StarRail.proto         # hsr protobufs
+├── CmdId.json             # cmd ids
+├── common/                # shared stuff
+│   ├── db.py              # db.json stuff
+│   ├── res.py             # resource loader
+│   ├── res/               # resource data
+│   ├── srtools.py         # freesr-data.json stuff
+│   └── util.py            # utils
+├── gameserver/            # game server
+│   ├── client.py          # client connection
+│   ├── connection.py      # packet framing
+│   ├── packet.py          # packet encode/decode
+│   ├── handler.py         # handler base
+│   ├── faker.py           # fake connection thingy
+│   └── handlers/          # handlers (avatar, battle, scene, ...)
+├── sdkserver/             # sdk/dispatch server
+├── kcpshimmy/             # kcp -> tcp shimmer
+├── proto/                 # proto lib output
+├── main.lua               # lua that the server can send
+├── setup.bat              # setup script
+├── start.bat              # start servers
+└── tidy.bat               # for dev
+```
+
+</details>
+
+-- --
+
+<details>
+<summary>License</summary>
+
+-- --
+
+Unlicense
 
 </details>
 
