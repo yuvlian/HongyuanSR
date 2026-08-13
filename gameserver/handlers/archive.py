@@ -1,6 +1,7 @@
-from proto import GetArchiveDataScRsp, ArchiveData
-from ..handler import handler
+from proto import ArchiveData, GetArchiveDataScRsp
+
 from ..connection import Connection
+from ..handler import handler
 from ..packet import Packet
 
 

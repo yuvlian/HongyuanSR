@@ -1,7 +1,9 @@
-from enum import StrEnum
-from pydantic import BaseModel
-from typing import OrderedDict, Optional
+from __future__ import annotations
 
+from collections import OrderedDict
+from enum import StrEnum
+
+from pydantic import BaseModel
 
 FILE_NAME = "db.json"
 
@@ -50,6 +52,23 @@ class MultiPath(StrEnum):
             return id
         return 8001
 
+    @staticmethod
+    def from_id(id: int) -> MultiPath | None:
+        for m in MultiPath:
+            if m.to_int() == id:
+                return m
+        return None
+
+    @staticmethod
+    def parse(s: str) -> MultiPath | None:
+        s = s.strip().lower().replace("-", "_")
+        if s.isdigit():
+            return MultiPath.from_id(int(s))
+        for m in MultiPath:
+            if m.name.lower() == s or m.value == s:
+                return m
+        return None
+
 
 class CalyxEntity(BaseModel):
     entity_id: int
@@ -73,7 +92,7 @@ class PlayerMultiPath(BaseModel):
 class PlayerLineup(BaseModel):
     overworld_lineup: OrderedDict[int, int]
     # this overrides the overworld_lineup when entering battle
-    custom_battle_lineup: Optional[OrderedDict[int, int]] = None
+    custom_battle_lineup: OrderedDict[int, int] | None = None
 
 
 class GlobalBuff(BaseModel):
@@ -83,14 +102,14 @@ class GlobalBuff(BaseModel):
 
 class DB(BaseModel):
     scene_id: int
-    calyx: Optional[CalyxEntity] = None
+    calyx: CalyxEntity | None = None
     player: PlayerEntity
     multi_path: PlayerMultiPath
     lineup: PlayerLineup
     global_buff: GlobalBuff
 
     @staticmethod
-    def default() -> "DB":
+    def default() -> DB:
         return DB(
             scene_id=20313,
             calyx=CalyxEntity(

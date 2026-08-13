@@ -1,22 +1,24 @@
+from random import randint
+
+from common.res import AVATAR_CONFIGS
+from common.srtools import BattleType
+from common.util import FreesrUtils
 from proto import (
-    StartCocoonStageCsReq,
-    StartCocoonStageScRsp,
-    PveBattleResultCsReq,
-    PveBattleResultScRsp,
-    SceneBattleInfo,
     BattleBuff,
     BattleRelic,
-    BattleTargetList,
     BattleTarget,
+    BattleTargetList,
+    PveBattleResultCsReq,
+    PveBattleResultScRsp,
     RelicAffix,
+    SceneBattleInfo,
+    StartCocoonStageCsReq,
+    StartCocoonStageScRsp,
 )
-from ..handler import handler
+
 from ..connection import Connection
+from ..handler import handler
 from ..packet import Packet
-from common.res import AVATAR_CONFIGS
-from common.util import FreesrUtils
-from common.srtools import BattleType
-from random import randint
 
 
 @handler
@@ -40,7 +42,7 @@ async def create_battle_info(
     battle_type = sr.battle_config.battle_type
 
     if battle_type == BattleType.SU:
-        raise Exception("SU battle isn't supported, never will be")
+        raise NotImplementedError("SU battle isn't supported, never will be")
 
     battle_info = SceneBattleInfo(
         battle_id=1,

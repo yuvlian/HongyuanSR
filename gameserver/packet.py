@@ -1,13 +1,14 @@
+from __future__ import annotations
+
 import asyncio
 import struct
-
 
 HEAD_MAGIC = b"\x9d\x74\xc7\x14"
 TAIL_MAGIC = b"\xd7\xa1\x52\xc8"
 
 
 class Packet:
-    __slots__ = ("cmd", "head", "body")
+    __slots__ = ("body", "cmd", "head")
 
     def __init__(self, cmd: int = 0, head: bytes = b"", body: bytes = b""):
         self.cmd = cmd
@@ -39,7 +40,7 @@ class Packet:
         return bytes(buf)
 
     @classmethod
-    async def read_from(cls, reader: asyncio.StreamReader) -> "Packet":
+    async def read_from(cls, reader: asyncio.StreamReader) -> Packet:
         try:
             header_data = await reader.readexactly(12)
         except asyncio.IncompleteReadError:

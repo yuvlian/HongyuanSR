@@ -1,21 +1,23 @@
 import asyncio
+
 from betterproto2 import Message
+
 from common import db as database
 from common import srtools
-from common.util import AsyncFs, SyncFs, Log
+from common.util import AsyncFs, Log, SyncFs
 from proto.cmd import CmdRegistry
-from typing import Optional
+
 from .packet import Packet
 
 
 class Connection:
     __slots__ = (
-        "reader",
-        "writer",
         "db",
+        "db_last_modified",
         "freesr_data",
         "freesr_last_modified",
-        "db_last_modified",
+        "reader",
+        "writer",
     )
 
     def __init__(
@@ -38,9 +40,7 @@ class Connection:
     def decode_packet(self, pkt: Packet, msg: Message) -> Message:
         return msg.parse(pkt.body)
 
-    def _encode_packet(
-        self, msg: Message, override_name: Optional[str] = None
-    ) -> bytes:
+    def _encode_packet(self, msg: Message, override_name: str | None = None) -> bytes:
         msg_name = override_name or msg.__class__.__name__
         cmd = CmdRegistry.get_id(msg_name)
         pkt = Packet(cmd=cmd, body=bytes(msg))
@@ -50,9 +50,7 @@ class Connection:
         self.writer.write(buf)
         await self.writer.drain()
 
-    async def send_packet(
-        self, msg: Message, override_name: Optional[str] = None
-    ) -> None:
+    async def send_packet(self, msg: Message, override_name: str | None = None) -> None:
         buf = self._encode_packet(msg, override_name)
         await self._send(buf)
 
@@ -70,7 +68,7 @@ class Connection:
                 database.FILE_NAME, self.db.model_dump_json(indent=2)
             )
             self.db_last_modified = SyncFs.get_last_modified_time(database.FILE_NAME)
-        except Exception as e:
+        except (OSError, ValueError) as e:
             Log.error(f"failed saving db: {e}")
 
     async def refresh_freesr(self) -> None:
@@ -86,7 +84,7 @@ class Connection:
                 )
                 self.freesr_last_modified = current_mtime
                 Log.info("freesr data has been refreshed")
-        except Exception as e:
+        except (OSError, ValueError) as e:
             Log.error(f"failed refreshing freesr: {e}")
 
     async def refresh_db(self) -> None:
@@ -102,5 +100,5 @@ class Connection:
                 )
                 self.db_last_modified = current_mtime
                 Log.info("db has been refreshed")
-        except Exception as e:
+        except (OSError, ValueError) as e:
             Log.error(f"failed refreshing db: {e}")

@@ -1,7 +1,7 @@
 [project]
-name = "hongyuan-sr"
-version = "0.1.0"
-description = "District 8 SR Private Server"
+name = "echium-server"
+version = "4.4.55" # version of game supported
+description = "Honkai: Star Rail Private Server"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
@@ -12,5 +12,9 @@ dependencies = [
     "uvicorn>=0.41.0",
 ]
 
+[tool.ruff]
+exclude = ["kcpshimmy"]
+
 [tool.ruff.lint.per-file-ignores]
 "gameserver/handler.py" = ["E402", "F401"]
+

@@ -1,8 +1,9 @@
-from proto import GetBagScRsp
-from ..handler import handler
-from ..connection import Connection
-from ..packet import Packet
 from common.util import FreesrUtils
+from proto import GetBagScRsp
+
+from ..connection import Connection
+from ..handler import handler
+from ..packet import Packet
 
 
 @handler

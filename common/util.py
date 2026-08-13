@@ -1,9 +1,12 @@
-import aiofiles
-import proto
-from . import srtools as srt
 from pathlib import Path
-from typing import Protocol, Tuple, TypeVar, Type, Optional, List
+from typing import Protocol, TypeVar
+
+import aiofiles
 from pydantic import BaseModel
+
+import proto
+
+from . import srtools as srt
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -22,10 +25,10 @@ class AsyncFs:
     @staticmethod
     async def json_parse_or_write(
         path: str,
-        model_type: Type[T],
+        model_type: type[T],
         default: T,
         overwrite_invalid: bool,
-    ) -> Tuple[T, bool]:
+    ) -> tuple[T, bool]:
         if not Path(path).exists():
             await AsyncFs.write_to_file(
                 path,
@@ -154,8 +157,8 @@ class FreesrUtils:
 
     @staticmethod
     def avatar_to_battle_avatar_proto(
-        av: srt.Avatar, index: int, lc: Optional[srt.Lightcone], relics: List[srt.Relic]
-    ) -> Tuple[proto.BattleAvatar, List[proto.BattleBuff]]:
+        av: srt.Avatar, index: int, lc: srt.Lightcone | None, relics: list[srt.Relic]
+    ) -> tuple[proto.BattleAvatar, list[proto.BattleBuff]]:
         ba = proto.BattleAvatar()
         ba.index = index
         ba.avatar_type = proto.AvatarType.AVATAR_UPGRADE_AVAILABLE_TYPE
@@ -210,7 +213,7 @@ class FreesrUtils:
     @staticmethod
     def monsters_to_scene_monster_wave_proto(
         wave_id: int,
-        monsters: List[srt.Monster],
+        monsters: list[srt.Monster],
     ) -> proto.SceneMonsterWave:
 
         wave_id = max(wave_id, 1)
@@ -226,8 +229,8 @@ class FreesrUtils:
 
     @staticmethod
     def monsters_to_scene_monster_wave_protos(
-        monsters: List[List[srt.Monster]],
-    ) -> List[proto.SceneMonsterWave]:
+        monsters: list[list[srt.Monster]],
+    ) -> list[proto.SceneMonsterWave]:
 
         return [
             FreesrUtils.monsters_to_scene_monster_wave_proto(i, wave)

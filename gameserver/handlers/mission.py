@@ -4,8 +4,9 @@ from proto import (
     Mission,
     MissionStatus,
 )
-from ..handler import handler
+
 from ..connection import Connection
+from ..handler import handler
 from ..packet import Packet
 
 
@@ -15,7 +16,7 @@ async def on_get_mission_status(c: Connection, pkt: Packet) -> None:
     rsp = GetMissionStatusScRsp(
         finished_main_mission_id_list=req.main_mission_id_list,
         sub_mission_status_list=[
-            Mission(id=i, progress=1, status=MissionStatus.MISSION_FINISH)
+            Mission(id=i, progress=1, status=MissionStatus.MissionFinish)
             for i in req.sub_mission_id_list
         ],
     )

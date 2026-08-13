@@ -1,19 +1,20 @@
 from proto import (
+    AvatarType,
     GetCurSceneInfoScRsp,
-    SceneInfo,
+    GetEnteredSceneScRsp,
+    MotionInfo,
+    SceneActorInfo,
     SceneEntityGroupInfo,
     SceneEntityInfo,
-    SceneActorInfo,
-    ScenePropInfo,
     SceneIdentifier,
-    AvatarType,
-    MotionInfo,
+    SceneInfo,
+    ScenePropInfo,
     Vector,
 )
-from ..handler import handler
+
 from ..connection import Connection
+from ..handler import handler
 from ..packet import Packet
-from common.db import MultiPath
 
 
 @handler
@@ -26,8 +27,8 @@ async def on_get_cur_scene_info(c: Connection, pkt: Packet) -> None:
             SceneEntityInfo(
                 entity_id=slot + 1,
                 actor=SceneActorInfo(
-                    base_avatar_id=MultiPath.get_base_id(av_id),
-                    avatar_type=AvatarType.AVATAR_FORMAL_TYPE,
+                    base_avatar_id=av_id,
+                    avatar_type=AvatarType.AvatarType_AvatarFormalType,
                     uid=c.db.player.uid,
                 ),
                 motion=MotionInfo(
@@ -90,3 +91,8 @@ async def on_get_cur_scene_info(c: Connection, pkt: Packet) -> None:
     )
 
     await c.send_packet(rsp)
+
+
+@handler
+async def on_get_entered_scene(c: Connection, pkt: Packet) -> None:
+    await c.send_packet(GetEnteredSceneScRsp())

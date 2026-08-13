@@ -1,25 +1,28 @@
+from common.db import MultiPath
+from common.util import FreesrUtils
 from proto import (
-    GetAvatarDataScRsp,
     Avatar,
     AvatarPathData,
     AvatarPathSkillTree,
+    AvatarSync,
+    GetAvatarDataScRsp,
+    SetAvatarEnhancedIdScRsp,
+    TakePromotionRewardScRsp,
 )
-from ..handler import handler
+
 from ..connection import Connection
+from ..handler import handler
 from ..packet import Packet
-from common.db import MultiPath
-from common.util import FreesrUtils
 
 
-@handler
-async def on_get_avatar_data(c: Connection, pkt: Packet) -> None:
-    rsp = GetAvatarDataScRsp(is_get_all=True)
+def build_avatar_sync(c: Connection, equipped: bool = True) -> AvatarSync:
+    lightcone_uid_by_avatar = (
+        {lc.equip_avatar: lc.internal_uid for lc in c.freesr_data.lightcones}
+        if equipped
+        else {}
+    )
 
-    lightcone_uid_by_avatar = {
-        lc.equip_avatar: lc.internal_uid for lc in c.freesr_data.lightcones
-    }
-
-    rsp.avatar_list = []
+    avatar_list = []
     for av in c.freesr_data.avatars.values():
         base_id = MultiPath.get_base_id(av.avatar_id)
         avatar = Avatar(
@@ -40,18 +43,22 @@ async def on_get_avatar_data(c: Connection, pkt: Packet) -> None:
         else:
             avatar.cur_multi_path_avatar_type = base_id
 
-        rsp.avatar_list.append(avatar)
+        avatar_list.append(avatar)
 
-    relics_by_avatar = {
-        avatar: [
-            FreesrUtils.relic_to_equip_relic_proto(relic)
-            for relic in c.freesr_data.relics
-            if relic.equip_avatar == avatar
-        ]
-        for avatar in {relic.equip_avatar for relic in c.freesr_data.relics}
-    }
+    relics_by_avatar = (
+        {
+            avatar: [
+                FreesrUtils.relic_to_equip_relic_proto(relic)
+                for relic in c.freesr_data.relics
+                if relic.equip_avatar == avatar
+            ]
+            for avatar in {relic.equip_avatar for relic in c.freesr_data.relics}
+        }
+        if equipped
+        else {}
+    )
 
-    rsp.avatar_path_data_info_list = [
+    path_list = [
         AvatarPathData(
             avatar_id=av.avatar_id,
             rank=av.data.rank,
@@ -71,4 +78,27 @@ async def on_get_avatar_data(c: Connection, pkt: Packet) -> None:
         for av in c.freesr_data.avatars.values()
     ]
 
+    return AvatarSync(avatar_list=avatar_list, avatar_path_data_info_list=path_list)
+
+
+@handler
+async def on_get_avatar_data(c: Connection, pkt: Packet) -> None:
+    sync = build_avatar_sync(c)
+
+    rsp = GetAvatarDataScRsp(
+        is_get_all=True,
+        avatar_list=sync.avatar_list,
+        avatar_path_data_info_list=sync.avatar_path_data_info_list,
+    )
+
     await c.send_packet(rsp)
+
+
+@handler
+async def on_take_promotion_reward(c: Connection, pkt: Packet) -> None:
+    await c.send_packet(TakePromotionRewardScRsp())
+
+
+@handler
+async def on_set_avatar_enhanced_id(c: Connection, pkt: Packet) -> None:
+    await c.send_packet(SetAvatarEnhancedIdScRsp())

@@ -1,6 +1,7 @@
 from proto import GetBigDataAllRecommendCsReq, GetBigDataAllRecommendScRsp
-from ..handler import handler
+
 from ..connection import Connection
+from ..handler import handler
 from ..packet import Packet
 
 

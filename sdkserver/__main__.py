@@ -1,15 +1,17 @@
+import base64
+
+import uvicorn
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse, PlainTextResponse
+
 from common import (
-    SDKSERVER_ADDR,
-    GAMESERVER_ADDR,
     ASSET_BUNDLE_URL,
     EX_RESOURCE_URL,
+    GAMESERVER_ADDR,
     LUA_URL,
+    SDKSERVER_ADDR,
 )
-from fastapi import FastAPI
-from fastapi.responses import PlainTextResponse, JSONResponse
-from proto import GateServer, Dispatch, RegionInfo
-import base64
-import uvicorn
+from proto import Dispatch, GateServer, RegionInfo
 
 app = FastAPI()
 

@@ -1,11 +1,12 @@
 import asyncio
 import traceback
-from common import db
-from common import srtools
+
+from common import db, srtools
 from common.util import AsyncFs, Log
 from proto.cmd import CmdRegistry
-from .handler import HANDLER_MAP, DUMMY_MAP
+
 from .connection import Connection
+from .handler import DUMMY_MAP, HANDLER_MAP
 
 
 async def handle_client(
@@ -39,7 +40,7 @@ async def handle_client(
                 # timeout cuz game can close w/o sending logout
                 pkt = await asyncio.wait_for(c.read_packet(), timeout=10.0)
                 cmd = pkt.cmd
-            except EOFError, asyncio.TimeoutError:
+            except TimeoutError, EOFError:
                 Log.debug(f"EOFError or asyncio.TimeoutError ({addr})")
                 break
 
@@ -55,7 +56,7 @@ async def handle_client(
             if handler := HANDLER_MAP.get(cmd):
                 try:
                     await handler(c, pkt)
-                except Exception as e:
+                except Exception as e:  # noqa: BLE001 - pmo
                     Log.error(f"handler error {cmd_name} ({cmd}): {e}")
                     Log.error(f"==== TRACEBACK =====\n{traceback.format_exc()}")
                     Log.error("==== TRACEBACK =====")
@@ -64,7 +65,7 @@ async def handle_client(
             else:
                 Log.warn(f"unhandled cmd: {cmd_name} ({cmd})")
 
-    except Exception as e:
+    except (OSError, ValueError) as e:
         Log.error(f"client error {addr}: {e}")
         Log.error(f"==== TRACEBACK =====\n{traceback.format_exc()}")
         Log.error("==== TRACEBACK =====")

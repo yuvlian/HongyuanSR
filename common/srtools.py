@@ -1,15 +1,16 @@
-from enum import StrEnum
-from pydantic import BaseModel
-from typing import Dict, List, Optional
+from __future__ import annotations
 
+from enum import StrEnum
+
+from pydantic import BaseModel
 
 FILE_NAME = "freesr-data.json"
 
 
 class Data(BaseModel):
     rank: int
-    skills: Dict[int, int]
-    skills_by_anchor_type: Dict[int, int]
+    skills: dict[int, int]
+    skills_by_anchor_type: dict[int, int]
 
 
 class Avatar(BaseModel):
@@ -19,8 +20,8 @@ class Avatar(BaseModel):
     promotion: int
     sp_max: int
     sp_value: int
-    techniques: List[int]
-    enhanced_id: Optional[int] = None
+    techniques: list[int]
+    enhanced_id: int | None = None
 
 
 class DynamicKey(BaseModel):
@@ -31,16 +32,16 @@ class DynamicKey(BaseModel):
 class Blessing(BaseModel):
     level: int
     id: int
-    dynamic_key: Optional[DynamicKey] = None
-    dynamic_values: Optional[List[DynamicKey]] = None
+    dynamic_key: DynamicKey | None = None
+    dynamic_values: list[DynamicKey] | None = None
 
 
 class Monster(BaseModel):
     monster_id: int
-    amount: int
+    amount: int = 1
     level: int
-    cur_hp: Optional[int] = None
-    max_hp: Optional[int] = None
+    cur_hp: int | None = None
+    max_hp: int | None = None
 
 
 class BattleType(StrEnum):
@@ -49,15 +50,21 @@ class BattleType(StrEnum):
     SU = "SU"
     AS = "AS"
 
+    @classmethod
+    def _missing_(cls, value):
+        if isinstance(value, str):
+            return cls(value.upper())
+        return None
+
 
 class BattleConfig(BaseModel):
-    battle_type: Optional[BattleType] = None
-    blessings: List[Blessing]
-    custom_stats: List[SubAffix]
-    monsters: List[List[Monster]]
+    battle_type: BattleType | None = None
+    blessings: list[Blessing]
+    custom_stats: list[SubAffix]
+    monsters: list[list[Monster]]
     stage_id: int
     path_resonance_id: int
-    cycle_count: Optional[int] = None
+    cycle_count: int | None = None
 
 
 class Lightcone(BaseModel):
@@ -72,7 +79,7 @@ class Lightcone(BaseModel):
 class Loadout(BaseModel):
     name: str
     avatar_id: int
-    relic_list: List[str]
+    relic_list: list[str]
 
 
 class SubAffix(BaseModel):
@@ -85,7 +92,7 @@ class Relic(BaseModel):
     equip_avatar: int
     internal_uid: int
     level: int
-    sub_affixes: List[SubAffix]
+    sub_affixes: list[SubAffix]
     relic_id: int
     main_affix_id: int
     relic_set_id: int
@@ -93,14 +100,14 @@ class Relic(BaseModel):
 
 class FreesrData(BaseModel):
     key: str
-    avatars: Dict[int, Avatar]
-    relics: List[Relic]
-    lightcones: List[Lightcone]
+    avatars: dict[int, Avatar]
+    relics: list[Relic]
+    lightcones: list[Lightcone]
     battle_config: BattleConfig
-    loadout: Optional[List[Loadout]] = None
+    loadout: list[Loadout] | None = None
 
     @staticmethod
-    def default() -> "FreesrData":
+    def default() -> FreesrData:
         return FreesrData(
             key="default",
             avatars={

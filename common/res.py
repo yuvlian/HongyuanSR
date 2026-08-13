@@ -1,6 +1,6 @@
-from typing import List, Dict
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
+
 from .util import AsyncFs
 
 FILE_DIR = "./common/res"
@@ -10,16 +10,16 @@ class AvatarConfig(BaseModel):
     model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
 
     weakness_buff_id: int
-    technique_buff_ids: List[int]
+    technique_buff_ids: list[int]
 
 
 class AvatarConfigs(BaseModel):
     model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
 
-    avatar_configs: Dict[int, AvatarConfig]
+    avatar_configs: dict[int, AvatarConfig]
 
 
-AVATAR_CONFIGS: Dict[int, AvatarConfig] = {}
+AVATAR_CONFIGS: dict[int, AvatarConfig] = {}
 _loaded = False
 
 
