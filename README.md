@@ -101,11 +101,11 @@ Incase I haven't updated this project in a while, you can try updating it yourse
 
 1. Download https://github.com/yuvlian/echium/releases/download/0.1.0/win-x64.7z
 
-2. Extract & copy `.dll` and `.ini` to same folder as `StarRail.exe`
+2. Extract & copy `.dll` and `.json` to same folder as `StarRail.exe`
 
 3. Rename `.dll` file to `umpdc.dll`
 
-4. Edit `.ini` file content as needed (the default should work just fine)
+4. Edit `.json` file content if needed
 
 5. Run game
 
