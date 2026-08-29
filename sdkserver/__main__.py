@@ -8,8 +8,10 @@ from common import (
     ASSET_BUNDLE_URL,
     EX_RESOURCE_URL,
     GAMESERVER_ADDR,
+    IFIX_URL,
     LUA_URL,
     SDKSERVER_ADDR,
+    SEND_HOTFIX,
 )
 from proto import Dispatch, GateServer, RegionInfo
 
@@ -39,9 +41,6 @@ async def query_gateway() -> PlainTextResponse:
     rsp = GateServer(
         ip=GAMESERVER_ADDR[0],
         port=GAMESERVER_ADDR[1],
-        asset_bundle_url=ASSET_BUNDLE_URL,
-        ex_resource_url=EX_RESOURCE_URL,
-        lua_url=LUA_URL,
         ifix_version="0",
         # starting from 4.2 prod, hsr forces KCP.
         # use_tcp=True,
@@ -53,6 +52,11 @@ async def query_gateway() -> PlainTextResponse:
         unk6=True,
         unk7=True,
     )
+    if SEND_HOTFIX:
+        rsp.asset_bundle_url = ASSET_BUNDLE_URL
+        rsp.ex_resource_url = EX_RESOURCE_URL
+        rsp.ifix_url = IFIX_URL
+        rsp.lua_url = LUA_URL
     rsp = bytes(rsp)
     rsp = base64.b64encode(rsp)
 

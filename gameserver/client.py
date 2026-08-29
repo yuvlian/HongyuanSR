@@ -41,7 +41,7 @@ async def handle_client(
                 pkt = await asyncio.wait_for(c.read_packet(), timeout=10.0)
                 cmd = pkt.cmd
             except TimeoutError, EOFError:
-                Log.debug(f"EOFError or asyncio.TimeoutError ({addr})")
+                Log.debug(f"EOFError or asyncio.TimeoutError {addr}")
                 break
 
             try:

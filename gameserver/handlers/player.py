@@ -146,7 +146,6 @@ async def on_get_player_board_data(c: Connection, pkt: Packet) -> None:
         # unlocked_personal_card_list=[253001],
         display_avatar_vec=DisplayAvatarVec(is_display=False),
     )
-    print(rsp)
 
     await c.send_packet(rsp)
 

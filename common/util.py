@@ -161,7 +161,7 @@ class FreesrUtils:
     ) -> tuple[proto.BattleAvatar, list[proto.BattleBuff]]:
         ba = proto.BattleAvatar()
         ba.index = index
-        ba.avatar_type = proto.AvatarType.AVATAR_UPGRADE_AVAILABLE_TYPE
+        ba.avatar_type = proto.AvatarType.AvatarType_AvatarUpgradeAvailableType
         ba.id = av.avatar_id
         ba.level = av.level
         ba.rank = av.data.rank

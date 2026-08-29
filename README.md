@@ -1,6 +1,6 @@
 # echium-server
 
-Honkai: Star Rail private server (4.4.55)
+Honkai: Star Rail private server (4.5.51)
 
 Incase I haven't updated this project in a while, you can try updating it yourself with https://github.com/yuvlian/hsr-proto
 
@@ -84,11 +84,15 @@ Incase I haven't updated this project in a while, you can try updating it yourse
 
 1. `git clone https://github.com/yuvlian/echium-server --recursive`
 
+    MAKE SURE YOU CLONE RECURSIVELY
+
 2. `cd echium-server`
 
 3. `./setup`
 
 4. `./start`
+
+For hotfix stuff, check `common/__init__.py`
 
 </details>
 

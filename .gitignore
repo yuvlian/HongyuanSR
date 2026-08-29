@@ -17,3 +17,4 @@ db.json
 _kcpshimmy
 s.bat
 res.json
+bench_compile.py

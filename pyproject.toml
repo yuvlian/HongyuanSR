@@ -1,6 +1,6 @@
 [project]
 name = "echium-server"
-version = "4.4.55" # version of game supported
+version = "4.5.51" # version of game supported
 description = "Honkai: Star Rail Private Server"
 readme = "README.md"
 requires-python = ">=3.14"
@@ -17,4 +17,8 @@ exclude = ["kcpshimmy"]
 
 [tool.ruff.lint.per-file-ignores]
 "gameserver/handler.py" = ["E402", "F401"]
+
+[tool.uv.sources]
+betterproto2-compiler = { git = "https://github.com/yuvlian/fasterproto2", subdirectory = "betterproto2_compiler", rev = "b4d1805" }
+betterproto2 = { git = "https://github.com/yuvlian/fasterproto2", subdirectory = "betterproto2", rev = "b4d1805" }
 
