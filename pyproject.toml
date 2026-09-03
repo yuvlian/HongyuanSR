@@ -1,6 +1,6 @@
 [project]
 name = "echium-server"
-version = "4.5.51" # version of game supported
+version = "4.5.52" # version of game supported
 description = "Honkai: Star Rail Private Server"
 readme = "README.md"
 requires-python = ">=3.14"

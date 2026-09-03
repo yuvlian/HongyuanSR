@@ -56,6 +56,8 @@ class FakeConnection:
             global_buff=SimpleNamespace(
                 castorice=True,
                 sw_999=True,
+                vore_override=False,
+                vore_level=0,
             ),
         )
         self.freesr_data = SimpleNamespace(

@@ -98,6 +98,8 @@ class PlayerLineup(BaseModel):
 class GlobalBuff(BaseModel):
     castorice: bool
     sw_999: bool
+    vore_override: bool = False
+    vore_level: int = 0
 
 
 class DB(BaseModel):
@@ -143,5 +145,7 @@ class DB(BaseModel):
             global_buff=GlobalBuff(
                 castorice=True,
                 sw_999=True,
+                vore_override=False,
+                vore_level=0,
             ),
         )

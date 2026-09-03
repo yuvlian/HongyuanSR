@@ -298,6 +298,22 @@ async def create_battle_info(
             )
         )
 
+    if c.db.global_buff.vore_override:
+        vore_level = c.db.global_buff.vore_level
+        battle_info.buff_list = [
+            b for b in battle_info.buff_list
+            if b.id not in (3034001, 3034002, 3034003)
+        ]
+        if 0 < vore_level <= 3:
+            battle_info.buff_list.append(
+                BattleBuff(
+                    id=3034000 + vore_level,
+                    level=1,
+                    wave_flag=0xFFFFFFFF,
+                    owner_index=0xFFFFFFFF,
+                )
+            )
+
     return battle_info
 
 

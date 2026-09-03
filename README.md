@@ -1,6 +1,6 @@
 # echium-server
 
-Honkai: Star Rail private server (4.5.51)
+Honkai: Star Rail private server (4.5.52)
 
 Incase I haven't updated this project in a while, you can try updating it yourself with https://github.com/yuvlian/hsr-proto
 
@@ -37,7 +37,10 @@ Incase I haven't updated this project in a while, you can try updating it yourse
     | :--- | :--- | :--- | :--- |
     | `tb` | `<id / path>` | Change Trailblazer path | `tb 8002`, `tb stelle_destruction` |
     | `m7` | `<id / path>` | Change March 7th path | `m7 1224`, `m7 march_hunt` |
-    | `gb` | `cast` / `sw` `<on/off>` | Toggle global buffs for Castorice or Silver Wolf | `gb cast on`, `gb sw off` |
+    | `gb` | `cast <on/off>` | Toggle Castorice global buff | `gb cast on` |
+    | `gb` | `sw <on/off>` | Toggle Silver Wolf global buff | `gb sw off` |
+    | `gb` | `vore <on/off>` | Toggle voracity blessing override | `gb vore on` |
+    | `gb` | `vorelvl <0-3>` | Set voracity blessing level | `gb vorelvl 2` |
     | `cl` | `add <id1> <id2>...` | Add characters to custom battle lineup | `cl add 1001 1001` |
     | `cl` | `clear` | Reset custom battle lineup | `cl clear` |
     | `sync` | - | Sync relics, lightcones, and inventory from `freesr-data.json` | `sync` |
