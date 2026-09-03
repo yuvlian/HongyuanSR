@@ -25,7 +25,7 @@ Incase I haven't updated this project in a while, you can try updating it yourse
 
 -- --
 
-- Battle through calyx with `freesr-data.json` (from https://srtools.neonteam.dev/) support, global buffs (toggleable), etc.
+- Battle through calyx with `freesr-data.json` (from https://srtools.neonteam.dev/) support, special blessings (toggleable), etc.
 
 - Overworld lineup works and there is custom battle lineup support (like the 10 sparxie screenshot).
 
@@ -37,10 +37,10 @@ Incase I haven't updated this project in a while, you can try updating it yourse
     | :--- | :--- | :--- | :--- |
     | `tb` | `<id / path>` | Change Trailblazer path | `tb 8002`, `tb stelle_destruction` |
     | `m7` | `<id / path>` | Change March 7th path | `m7 1224`, `m7 march_hunt` |
-    | `gb` | `cast <on/off>` | Toggle Castorice global buff | `gb cast on` |
-    | `gb` | `sw <on/off>` | Toggle Silver Wolf global buff | `gb sw off` |
-    | `gb` | `vore <on/off>` | Toggle voracity blessing override | `gb vore on` |
-    | `gb` | `vorelvl <0-3>` | Set voracity blessing level | `gb vorelvl 2` |
+    | `sb` | `cast <on/off>` | Toggle Castorice global buff | `sb cast on` |
+    | `sb` | `sw <on/off>` | Toggle Silver Wolf global buff | `sb sw off` |
+    | `sb` | `vore <on/off>` | Toggle whether server should override voracity blessing from srtools json | `sb vore on` |
+    | `sb` | `vorelvl <0-3>` | Set voracity blessing level | `sb vorelvl 2` |
     | `cl` | `add <id1> <id2>...` | Add characters to custom battle lineup | `cl add 1001 1001` |
     | `cl` | `clear` | Reset custom battle lineup | `cl clear` |
     | `sync` | - | Sync relics, lightcones, and inventory from `freesr-data.json` | `sync` |

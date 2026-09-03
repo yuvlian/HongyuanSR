@@ -53,7 +53,7 @@ class FakeConnection:
                     z=1,
                 ),
             ),
-            global_buff=SimpleNamespace(
+            special_blessing=SimpleNamespace(
                 castorice=True,
                 sw_999=True,
                 vore_override=False,

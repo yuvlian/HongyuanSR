@@ -323,7 +323,7 @@ async def on_set_signature(c: Connection, pkt: Packet) -> None:
 
     if command in ("tb", "m7"):
         feedback = await path_command(c, command, args)
-    elif command == "gb":
+    elif command == "sb":
         sub = args[0] if args else ""
         if sub == "vorelvl":
             if len(args) < 2:
@@ -333,33 +333,33 @@ async def on_set_signature(c: Connection, pkt: Packet) -> None:
                 if level is None:
                     feedback = "vorelvl needs 0-3"
                 else:
-                    if c.db.global_buff.vore_level != level:
-                        c.db.global_buff.vore_level = level
+                    if c.db.special_blessing.vore_level != level:
+                        c.db.special_blessing.vore_level = level
                         asyncio.create_task(c.save_db())
                     feedback = f"vorelvl {level}"
         else:
             on = parse_bool(args[1:], True)
             if on is None:
-                feedback = "gb needs on/off"
+                feedback = "sb needs on/off"
             else:
                 match sub:
                     case "cast":
-                        if c.db.global_buff.castorice != on:
-                            c.db.global_buff.castorice = on
+                        if c.db.special_blessing.castorice != on:
+                            c.db.special_blessing.castorice = on
                             asyncio.create_task(c.save_db())
                         feedback = f"castorice {'on' if on else 'off'}"
                     case "sw":
-                        if c.db.global_buff.sw_999 != on:
-                            c.db.global_buff.sw_999 = on
+                        if c.db.special_blessing.sw_999 != on:
+                            c.db.special_blessing.sw_999 = on
                             asyncio.create_task(c.save_db())
                         feedback = f"sw {'on' if on else 'off'}"
                     case "vore":
-                        if c.db.global_buff.vore_override != on:
-                            c.db.global_buff.vore_override = on
+                        if c.db.special_blessing.vore_override != on:
+                            c.db.special_blessing.vore_override = on
                             asyncio.create_task(c.save_db())
                         feedback = f"vore {'on' if on else 'off'}"
                     case _:
-                        feedback = "gb needs cast/sw/vore/vorelvl"
+                        feedback = "sb needs cast/sw/vore/vorelvl"
     elif command == "cl":
         feedback = lineup_command(c, args)
     elif command == "sync":

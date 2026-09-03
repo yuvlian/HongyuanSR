@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections import OrderedDict
 from enum import StrEnum
 
-from pydantic import BaseModel
+from pydantic import AliasChoices, BaseModel, Field
 
 FILE_NAME = "db.json"
 
@@ -95,9 +95,9 @@ class PlayerLineup(BaseModel):
     custom_battle_lineup: OrderedDict[int, int] | None = None
 
 
-class GlobalBuff(BaseModel):
-    castorice: bool
-    sw_999: bool
+class SpecialBlessing(BaseModel):
+    castorice: bool = True
+    sw_999: bool = True
     vore_override: bool = False
     vore_level: int = 0
 
@@ -108,7 +108,10 @@ class DB(BaseModel):
     player: PlayerEntity
     multi_path: PlayerMultiPath
     lineup: PlayerLineup
-    global_buff: GlobalBuff
+    special_blessing: SpecialBlessing = Field(
+        default_factory=SpecialBlessing,
+        validation_alias=AliasChoices("special_blessing", "global_buff"),
+    )
 
     @staticmethod
     def default() -> DB:
@@ -142,7 +145,7 @@ class DB(BaseModel):
                 overworld_lineup={0: 1001, 1: 1002, 2: 1003, 3: 1004},
                 custom_battle_lineup=None,
             ),
-            global_buff=GlobalBuff(
+            special_blessing=SpecialBlessing(
                 castorice=True,
                 sw_999=True,
                 vore_override=False,

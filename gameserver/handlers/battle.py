@@ -276,7 +276,7 @@ async def create_battle_info(
     if dahlia_buffs:
         battle_info.buff_list.extend(dahlia_buffs)
 
-    if not has_castorice_global and c.db.global_buff.castorice:
+    if not has_castorice_global and c.db.special_blessing.castorice:
         battle_info.buff_list.append(
             BattleBuff(
                 id=140703,
@@ -287,7 +287,7 @@ async def create_battle_info(
             )
         )
 
-    if not has_sw_global and c.db.global_buff.sw_999:
+    if not has_sw_global and c.db.special_blessing.sw_999:
         battle_info.buff_list.append(
             BattleBuff(
                 id=150602,
@@ -298,11 +298,10 @@ async def create_battle_info(
             )
         )
 
-    if c.db.global_buff.vore_override:
-        vore_level = c.db.global_buff.vore_level
+    if c.db.special_blessing.vore_override:
+        vore_level = c.db.special_blessing.vore_level
         battle_info.buff_list = [
-            b for b in battle_info.buff_list
-            if b.id not in (3034001, 3034002, 3034003)
+            b for b in battle_info.buff_list if b.id not in (3034001, 3034002, 3034003)
         ]
         if 0 < vore_level <= 3:
             battle_info.buff_list.append(
